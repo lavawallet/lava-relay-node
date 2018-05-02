@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/lavawallet/lava-relay-node#readme",
   "dependencies": {
+    "jayson": "^2.0.5",
     "public-ip": "^2.4.0",
     "redis": "^2.8.0",
+    "tcp-port-used": "^0.1.2",
     "web3": "^1.0.0-beta.34"
   }
 }
