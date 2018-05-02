@@ -9,7 +9,9 @@ var relayconfig = {
   minGasPriceWei: 10,
   maxGasPriceWei: 6,
   minProfitFactor: 1.5,
-  web3provider: 'http://localhost:8545'
+  web3provider: 'http://localhost:8545',
+
+  allowTestPackets: true,
 }
 
 
