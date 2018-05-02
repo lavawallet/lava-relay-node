@@ -1,8 +1,9 @@
 
 var relayconfig = {
+  name:'A cool relay node',
   seedNodes: [
-    10.10.10.10:9774,
-    
+    {name:'main1',address:'10.10.10.10:9774'},
+
   ],
   priceOracleURL: null,
   minGasPriceWei: 10,
