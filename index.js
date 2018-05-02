@@ -15,7 +15,7 @@ const accountConfig = require('./account.config').account.relay
 var redisInterface = require('./lib/redis-interface')
 
 var LavaPeerInterface =  require('./lib/lava-peer-interface');
-var lavaPeerInterface = new LavaPeerInterface();
+var lavaPeerInterface = new LavaPeerInterface(relayConfig);
 
 init(web3);
 
