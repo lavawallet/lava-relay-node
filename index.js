@@ -14,8 +14,8 @@ const accountConfig = require('./account.config').account.relay
 
 var redisInterface = require('./lib/redis-interface')
 
-
-
+var LavaPeerInterface =  require('./lib/lava-peer-interface');
+var lavaPeerInterface = new LavaPeerInterface();
 
 init(web3);
 
@@ -24,6 +24,8 @@ async function init(web3)
 {
     console.log("Booting your Lava Relay Node...")
 
-    await redisInterface.init()
+    await redisInterface.init();
+
+    await lavaPeerInterface.init();
 
 }
