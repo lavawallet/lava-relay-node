@@ -3,6 +3,9 @@
 var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
 var INFURA_MAINNET_URL = 'https://mainnet.infura.io/gmXEVo5luMPUGPqg6mhy';
 
+const TEST_MODE = true;
+
+
 var Web3 = require('web3')
 
 var web3 = new Web3()
@@ -17,6 +20,25 @@ var redisInterface = require('./lib/redis-interface')
 var LavaPeerInterface =  require('./lib/lava-peer-interface');
 var lavaPeerInterface = new LavaPeerInterface(redisInterface,relayConfig);
 
+
+
+var specified_web3 = relayConfig.web3provider;
+
+if(specified_web3 != null)
+{
+  web3.setProvider(specified_web3)
+  console.log('using web3',specified_web3)
+}else{
+  if(TEST_MODE)
+  {
+    console.log("Using test mode!!! - Ropsten ")
+    web3.setProvider(INFURA_ROPSTEN_URL)
+  }else{
+    web3.setProvider(INFURA_MAINNET_URL)
+  }
+}
+
+
 init(web3);
 
 
@@ -26,6 +48,6 @@ async function init(web3)
 
     await redisInterface.init();
 
-    await lavaPeerInterface.init();
+    await lavaPeerInterface.init(web3);
 
 }
