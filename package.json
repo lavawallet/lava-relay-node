@@ -4,7 +4,8 @@
   "description": "A p2p node for relaying lava transactions for Ethereum",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,8 @@
     "tcp-port-used": "^0.1.2",
     "web3": "^1.0.0-beta.34",
     "web3-utils": "^1.0.0-beta.34"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
   }
 }
