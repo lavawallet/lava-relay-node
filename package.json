@@ -4,7 +4,7 @@
   "description": "A p2p node for relaying lava transactions for Ethereum",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "dev": "nodemon index.js"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "web3-utils": "^1.0.0-beta.34"
   },
   "devDependencies": {
+    "mocha": "^5.2.0",
     "nodemon": "^1.17.5"
   }
 }
