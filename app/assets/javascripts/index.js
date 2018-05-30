@@ -8,30 +8,21 @@ import Vue from 'vue'
 
 import AlertRenderer from './alert-renderer'
 
-import OverviewRenderer from './overview-renderer'
-import HomeRenderer from './home-renderer'
-import AccountRenderer from './account-renderer'
-import ProfileRenderer from './profile-renderer'
+import RelayRenderer from './relay-renderer'
 
 import EthHelper from './ethhelper'
 
 
-import HomeDashboard from './home-dashboard'
-import AccountDashboard from './account-dashboard'
-import OverviewDashboard from './overview-dashboard'
+import RelayDashboard from './relay-dashboard'
 
 
 //var web3 = this.connectWeb3();
 
-var overviewRenderer = new OverviewRenderer();
-var homeRenderer = new HomeRenderer();
-var accountRenderer = new AccountRenderer();
+
 var alertRenderer = new AlertRenderer();
-var profileRenderer = new ProfileRenderer();
+var relayRenderer = new RelayRenderer();
 //var ethHelper = new EthHelper();
-var home = new HomeDashboard();
-var account = new AccountDashboard();
-var overview = new OverviewDashboard();
+var relayDashboard = new RelayDashboard();
 
 var navbar = new Vue({
   el: '#navbar',
@@ -45,29 +36,14 @@ var navbar = new Vue({
 $(document).ready(function(){
 
 
-      if($("#home").length > 0){
+      if($("#relay").length > 0){
       //  var web3 = ethHelper.init( alertRenderer);
 
-        home.init(homeRenderer);
-      }
-
-      if($("#profile").length > 0){
-        profileRenderer.init()
+        relayDashboard.init(relayRenderer);
       }
 
 
-      if($("#account").length > 0){
-        //var web3 = ethHelper.init( alertRenderer);
-
-        account.init(accountRenderer);
-      }
-
-
-      if($("#overview").length > 0){
-      //  var web3 = ethHelper.init( alertRenderer);
-
-        overview.init(overviewRenderer);
-      }
+ 
 
 });
 

@@ -16,6 +16,7 @@ const accountConfig = require('./account.config').account.relay
 
 
 var redisInterface = require('./lib/redis-interface')
+var webServer = require('./lib/web-server')
 
 var LavaPeerInterface =  require('./lib/lava-peer-interface');
 var lavaPeerInterface = new LavaPeerInterface(redisInterface,relayConfig);
@@ -49,5 +50,7 @@ async function init(web3)
     await redisInterface.init();
 
     await lavaPeerInterface.init(web3);
+
+    await webServer.init(web3,lavaPeerInterface)
 
 }

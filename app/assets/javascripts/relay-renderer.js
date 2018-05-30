@@ -5,9 +5,6 @@ import Vue from 'vue';
 
 var io = require('socket.io-client');
 
-import HashGraph from './hash-graph'
-
-var hashGraph = new HashGraph();
 
 var app;
 var dashboardData;
@@ -129,7 +126,6 @@ export default class HomeRenderer {
 
         console.log('got hashratedata ', hashingDataSet );
 
-        hashGraph.update(hashingDataSet)
 
 
       });
@@ -174,9 +170,7 @@ export default class HomeRenderer {
         points: [0,0,0]
       }
 
-      hashGraph.init()
-
-
+       
 
 
 
