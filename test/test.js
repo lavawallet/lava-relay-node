@@ -21,7 +21,8 @@ describe('Oracles', function() {
   describe('Price oracle ', function() {
     it('should get an HTTP response', function() {
 
-      var marketData = MarketOracle.getMercatoxPriceData();
+     
+      var marketData = MarketOracle.getMercatoxPriceData("0xBTC_ETH");
 
       console.log(marketData)
 
