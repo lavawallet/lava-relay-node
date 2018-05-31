@@ -1,10 +1,12 @@
 
 var EthGasOracle = require('../lib/eth-gas-oracle');
 
-var assert = require('assert');
-describe('Array', function() {
+var MarketOracle = require('../lib/market-oracle');
 
-  describe(' gas oracle ', function() {
+var assert = require('assert');
+describe('Oracles', function() {
+
+  describe('Gas oracle ', function() {
     it('should get an HTTP response', function() {
 
       var gasData = EthGasOracle.getGasData();
@@ -12,6 +14,18 @@ describe('Array', function() {
       console.log(gasData)
 
       assert.ok( gasData  );
+
+    });
+
+  });
+  describe('Price oracle ', function() {
+    it('should get an HTTP response', function() {
+
+      var marketData = MarketOracle.getMercatoxPriceData();
+
+      console.log(marketData)
+
+      assert.ok( marketData  );
 
     });
 
