@@ -4,7 +4,7 @@
 <script>
       $(document).ready(function(){
 
-        $.post("http://localhost:3000/lavapacket",{lavaPacketData: 1 }, function(data){
+        $.post("http://localhost:3000/lavapacket",{from: 1 , to: 2}, function(data){
           if(data==='done')
             {
               alert("login success");
