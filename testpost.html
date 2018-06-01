@@ -1,5 +1,17 @@
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
 <script>
       $(document).ready(function(){
+
+        $.post("http://localhost:3000/packet",{lavaPacketData: 1 }, function(data){
+          if(data==='done')
+            {
+              alert("login success");
+            }
+        });
+
+
         var user,pass;
         $("#submit").click(function(){
           user=$("#user").val();
