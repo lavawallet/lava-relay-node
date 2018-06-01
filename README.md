@@ -15,4 +15,5 @@
 
 ### TODO
 
-Add oracles and render them on web server 
+1. Add oracles and render them on web server
+2. Allow for lava packets to be POSTed in and render them on web server
