@@ -111,7 +111,7 @@ pre {
   font-family: monospace; }
 
 body {
-  color: #2a2a2a;
+  color: #4a4a4a;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5; }
@@ -6526,7 +6526,7 @@ a {
   font-family: 'Roboto Mono', monospace; }
 
 .color-primary {
-  color: #ff7209; }
+  color: #FFC312; }
 
 .button-primary {
   color: white;
@@ -6581,14 +6581,11 @@ a {
 .transaction-list .status-unknown {
   border-left: 4px solid #e056fd; }
 
-.title {
-  color: #6ab04c; }
-
-.subtitle {
-  color: white; }
-
 .slate-theme-dark {
   background-color: #282c34; }
+
+.color-white {
+  color: #fff; }
 
 .color-orange {
   color: #ff7209; }
@@ -6607,9 +6604,9 @@ a {
   .slate-theme .background-secondary {
     background-color: #282c34; }
 
-.circuit-overlay {
+.hex-overlay {
   position: relative;
-  background: url(/app/assets/images/circuits-overlay.png); }
+  background: url(/app/assets/images/what-the-hex-dark.png); }
 
 .toggle-mining-instructions {
   padding: 10px;
