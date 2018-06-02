@@ -1,3 +1,12 @@
+/*
+LAVA PACKET UTIL
+javascript library
+
+Version 0.10
+
+*/
+
+
 
 var sampleLavaPacket = {
   from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
@@ -45,6 +54,6 @@ xhr.onload = function() {
     }
 };
 xhr.send(serializePacketData( lavaPacketData ));
- 
+
 
 }
