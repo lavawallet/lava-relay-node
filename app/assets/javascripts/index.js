@@ -34,16 +34,16 @@ var navbar = new Vue({
 
 
 $(document).ready(function(){
-
+    console.log('hello worrld ')
 
       if($("#relay").length > 0){
       //  var web3 = ethHelper.init( alertRenderer);
-
+        console.log('render relay')
         relayDashboard.init(relayRenderer);
       }
 
 
- 
+
 
 });
 

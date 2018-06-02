@@ -7,7 +7,7 @@
     "relay": "node index.js",
     "webpack": "webpack",
     "test": "mocha",
-    "dev": "nodemon index.js"
+    "dev": "webpack-dev-server"
   },
   "repository": {
     "type": "git",

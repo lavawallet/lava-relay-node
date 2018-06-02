@@ -1,6 +1,14 @@
 ## Lava Relay Node
 
 
+## How to run a relay
+
+1. Clone this project
+2. Run 'yarn' to install dependencies
+3. Run 'npm run webpack' to compile web files
+4. Run 'npm run relay'
+
+
 
 
 ##### Redis Tables
@@ -15,5 +23,5 @@
 
 ### TODO
 
-1. Add oracles and render them on web server
-2. Allow for lava packets to be POSTed in and render them on web server
+1. Render oracles them on web server
+2. Allow for lava packets to be POSTed in, store them in redis, and render them on web server

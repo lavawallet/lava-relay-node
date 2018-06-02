@@ -33342,7 +33342,7 @@ var solutiontxlist;
 var transfertxlist;
 var jumbotron;
 
-class HomeRenderer {
+class RelayRenderer {
 
   init() {
 
@@ -33460,10 +33460,7 @@ class HomeRenderer {
     jumbotron = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
       el: '#jumbotron',
       data: {
-        pool: {
-          poolData: { address: '' },
-          etherscanContractURL: {}
-        }
+        relayName: 'relay name'
       }
     });
 
@@ -33512,7 +33509,7 @@ class HomeRenderer {
   }
 
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = HomeRenderer;
+/* harmony export (immutable) */ __webpack_exports__["a"] = RelayRenderer;
 
 
 /***/ }),

@@ -14,7 +14,7 @@ var solutiontxlist;
 var transfertxlist;
 var jumbotron;
 
-export default class HomeRenderer {
+export default class RelayRenderer {
 
     init( )
     {
@@ -157,10 +157,7 @@ export default class HomeRenderer {
          jumbotron = new Vue({
         el: '#jumbotron',
         data:{
-          pool:{
-            poolData: { address:'' },
-            etherscanContractURL: {}
-           }
+          relayName: 'relay name'
          }
       });
 
@@ -170,7 +167,7 @@ export default class HomeRenderer {
         points: [0,0,0]
       }
 
-       
+
 
 
 
