@@ -15,6 +15,7 @@ var solutiontxlist;
 var transfertxlist;
 var jumbotron;
 var stats;
+var packetslist;
 
 export default class RelayRenderer {
 
@@ -100,6 +101,13 @@ export default class RelayRenderer {
 
       });
 
+      this.socket.on('lavaPackets', function (data) {
+
+          console.log('lava packets ', data )
+
+          Vue.set(packetslist, 'list',  data )
+
+      });
 
 
 
@@ -133,12 +141,19 @@ export default class RelayRenderer {
 
 
 
-               stats = new Vue({
+         stats = new Vue({
               el: '#stats',
               data:{
                 relayData: {}
                }
             });
+
+            packetslist = new Vue({
+                 el: '#packetslist',
+                 data:{
+                   list: []
+                  }
+               });
 
 
       var hashingDataSet= {
@@ -160,7 +175,8 @@ export default class RelayRenderer {
 
       console.log('Emit to websocket')
        this.socket.emit('getRelayData');
-    //
+       this.socket.emit('getLavaPackets');
+
     }
 
 
@@ -178,7 +194,8 @@ export default class RelayRenderer {
     {
 
       this.socket.emit('getRelayData');
-       //
+      this.socket.emit('getLavaPackets');
+
 
     }
 
