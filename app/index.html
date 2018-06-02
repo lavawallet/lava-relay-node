@@ -18,13 +18,15 @@
       <section class="hero circuit-overlay">
         <div class="hero-body">
           <div class="container has-text-centered" id='jumbotron'>
-            <h1 class="title font-primary-title color-primary">
-                Lava Network Relay
+            <h1 class="title  color-primary">
+                {{relayName}}
             </h1>
 
 
-            <h2 class="subtitle">
-              {{relayName}}
+              <div class="whitespace-sm"></div>
+
+            <h2 class="subtitle font-primary-title">
+              Lava Network Relay
             </h2>
 
 
@@ -34,13 +36,7 @@
             </div>
 
 
-              <a v-cloak v-bind:href='pool.poolData.etherscanMintingURL' >
-                <p>Minting: {{pool.poolData.mintingAddress}}</p>
-              </a>
 
-              <a v-cloak v-bind:href='pool.poolData.etherscanPaymentURL' >
-                <p>Payments: {{pool.poolData.paymentAddress}}</p>
-              </a>
 
               <div class="whitespace-sm"></div>
 

@@ -3,6 +3,7 @@ const $ = require('jquery');
 import Vue from 'vue';
 
 
+const relayConfig = require('../../../relay.config').config
 var io = require('socket.io-client');
 
 
@@ -91,11 +92,6 @@ export default class RelayRenderer {
       });
 
       this.socket.on('poolData', function (data) {
-      //  console.log('got poolData ', JSON.stringify(data));
-
-
-      //  self.accountListData.minerAccountData = data;
-
 
 
         data.etherscanMintingURL = "https://etherscan.io/address/"+data.mintingAddress.toString();
@@ -103,9 +99,6 @@ export default class RelayRenderer {
 
 
           Vue.set(jumbotron.pool, 'poolData',  data )
-
-      //  Vue.set(jumbotron.pool, 'etherscanMintingURL',  etherscanMintingURL )
-      //  Vue.set(jumbotron.pool, 'etherscanPaymentURL',  etherscanPaymentURL )
 
       });
 
@@ -157,7 +150,7 @@ export default class RelayRenderer {
          jumbotron = new Vue({
         el: '#jumbotron',
         data:{
-          relayName: 'relay name'
+          relayName: relayConfig.name
          }
       });
 
