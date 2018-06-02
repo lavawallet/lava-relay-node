@@ -2,3 +2,8 @@ node_modules
 
 relay.config.js
 account.config.js
+
+
+/public
+
+.node-xmlhttprequest*
