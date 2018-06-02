@@ -33342,6 +33342,7 @@ var dashboardData;
 var solutiontxlist;
 var transfertxlist;
 var jumbotron;
+var stats;
 
 class RelayRenderer {
 
@@ -33411,7 +33412,7 @@ class RelayRenderer {
 
       console.log('relay data ', data);
 
-      __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(jumbotron.pool, 'poolData', data);
+      __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(stats, 'relayData', data);
     });
 
     solutiontxlist = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
@@ -33438,6 +33439,13 @@ class RelayRenderer {
       el: '#jumbotron',
       data: {
         relayName: relayConfig.name
+      }
+    });
+
+    stats = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
+      el: '#stats',
+      data: {
+        relayData: {}
       }
     });
 
