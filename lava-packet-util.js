@@ -45,14 +45,18 @@ var xhr = new XMLHttpRequest();
 
 xhr.open('POST', lavaNodeURL);
 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-xhr.onload = function() {
-    if (xhr.status === 200  ) {
-        console.log('Request succeeded.');
-    }
-    else if (xhr.status !== 200) {
-        console.log('Request failed.  Returned status of ' + xhr.status);
-    }
-};
+xhr.onreadystatechange = function() {
+  if (xhr.readyState === 4) {
+    //var response = JSON.parse(xhr.responseText);
+      if (xhr.status === 200  ) {
+         console.log('successful');
+
+      } else {
+         console.log('failed');
+       
+      }
+  }
+}
 xhr.send(serializePacketData( lavaPacketData ));
 
 
