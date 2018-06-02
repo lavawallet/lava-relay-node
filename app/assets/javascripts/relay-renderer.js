@@ -14,6 +14,7 @@ var dashboardData;
 var solutiontxlist;
 var transfertxlist;
 var jumbotron;
+var stats;
 
 export default class RelayRenderer {
 
@@ -93,10 +94,9 @@ export default class RelayRenderer {
 
       this.socket.on('relayData', function (data) {
 
-        console.log('relay data ', data )
+          console.log('relay data ', data )
 
-
-          Vue.set(jumbotron.pool, 'poolData',  data )
+          Vue.set(stats, 'relayData',  data )
 
       });
 
@@ -130,6 +130,15 @@ export default class RelayRenderer {
           relayName: relayConfig.name
          }
       });
+
+
+
+               stats = new Vue({
+              el: '#stats',
+              data:{
+                relayData: {}
+               }
+            });
 
 
       var hashingDataSet= {
@@ -173,6 +182,6 @@ export default class RelayRenderer {
 
     }
 
-   
+
 
 }
