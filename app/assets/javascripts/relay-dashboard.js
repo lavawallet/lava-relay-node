@@ -10,7 +10,7 @@ export default class RelayDashboard {
   {
     setInterval( function(){
          renderer.update();
-    },30*1000);
+    },5*1000);
 
 
     renderer.init();

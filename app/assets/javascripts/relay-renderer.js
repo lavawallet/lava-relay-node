@@ -91,35 +91,12 @@ export default class RelayRenderer {
 
       });
 
-      this.socket.on('poolData', function (data) {
+      this.socket.on('relayData', function (data) {
 
-
-        data.etherscanMintingURL = "https://etherscan.io/address/"+data.mintingAddress.toString();
-        data.etherscanPaymentURL = "https://etherscan.io/address/"+data.paymentAddress.toString();
+        console.log('relay data ', data )
 
 
           Vue.set(jumbotron.pool, 'poolData',  data )
-
-      });
-
-
-      this.socket.on('hashrateData',   function (data) {
-
-        var labels = [];
-        var blocks = [];
-        var hashRates = [];
-
-        data.reverse().slice(0,100).map(function(item){
-          labels.push('Block '+ item.block.toString()),
-          blocks.push(item.block),
-          hashRates.push(item.hashrate)
-        })
-
-        var hashingDataSet = {blocks: blocks, points: hashRates, labels:labels};
-
-        console.log('got hashratedata ', hashingDataSet );
-
-
 
       });
 
@@ -171,13 +148,10 @@ export default class RelayRenderer {
       });
 
 
-      this.show();
 
       console.log('Emit to websocket')
-       this.socket.emit('getPoolData');
-       this.socket.emit('getHashrateData');
-       this.socket.emit('getActiveTransactionData');
-
+       this.socket.emit('getRelayData');
+    //
     }
 
 
@@ -194,22 +168,11 @@ export default class RelayRenderer {
      update(renderData)
     {
 
-      this.socket.emit('getPoolData');
-      this.socket.emit('getHashrateData');
-      this.socket.emit('getActiveTransactionData');
+      this.socket.emit('getRelayData');
+       //
 
-
-        this.show();
     }
 
-    hide()
-    {
-      $('#dashboard').hide();
-    }
-
-    show()
-    {
-      $('#dashboard').show();
-    }
+   
 
 }

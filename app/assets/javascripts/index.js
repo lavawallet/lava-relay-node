@@ -1,7 +1,7 @@
 
 const $ = require('jquery');
 
-import logo from '../images/TMPlogo.png'
+import logo from '../images/lavalogo4.png'
 import githubLogo from '../images/GitHub-Mark-64px.png'
 
 import Vue from 'vue'
@@ -37,7 +37,7 @@ $(document).ready(function(){
 
       if($("#relay").length > 0){
       //  var web3 = ethHelper.init( alertRenderer);
-         
+
         relayDashboard.init(relayRenderer);
       }
 
