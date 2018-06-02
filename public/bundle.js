@@ -33494,7 +33494,7 @@ var relayconfig = {
   priceOracleURL: null,
   minGasPriceWei: 10,
   maxGasPriceWei: 6,
-  minProfitFactor: 1.5,
+  profitMarginPercent: 20,
 
   allowTestPackets: true
 };
