@@ -104,30 +104,30 @@
 
 
      <div id="packetslist"  class="box background-secondary transaction-list " style="overflow-x:auto; min-height:480px;">
-       <div class='subtitle'>Lava Packets</div>
+       <div class='subtitle color-white'>Lava Packets</div>
        <table class='table table-dark zeroauto' v-cloak>
 
          <thead>
            <tr >
-             <td> Block </td>
-             <td> TxHash </td>
-             <td>   </td>
-             <td> Status </td>
+             <td> From </td>
+             <td> To </td>
+             <td> Token Address </td>
+             <td> Token Amount </td>
+             <td> Relayer Reward </td>
            </tr>
          </thead>
 
          <tbody>
 
            <tr v-for="(item, index) in list"  v-bind:class="item.htmlClass">
-             <td>  {{ item.block  }} </td>
-             <td>
 
-               <a v-bind:href='item.txURL' >
-                {{ item.txHash  }}
-              </a>
-              </td>
+             <td>  {{ item.from  }} </td>
+             <td>  {{ item.to  }} </td>
+             <td>  {{ item.tokenAddress }} </td>
+             <td>  {{ item.tokenAmount  }} </td>
+             <td>  {{ item.relayerReward  }} </td>
 
-             <td class="tx-status-cell">  {{ item.formattedStatus}} </td>
+
            </tr>
 
          </tbody>
