@@ -4,6 +4,7 @@ var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
 var LavaPeerInterface = require('../lib/lava-peer-interface');
 
 var redisInterface = require('../lib/redis-interface')
+var ContractInterface = require('../lib/contract-interface')
 
 const relayConfig = require('../relay.config').config
 
@@ -99,6 +100,19 @@ var lavaPeerInterface;
 
 
       });
+
+      it('checks for burned signature', async function() {
+
+      //  console.log('methodd',ContractInterface.getWalletContract(web3,'test'))
+          var response = await ContractInterface.getWalletContract(web3,'test').signatureBurned.call('0x8e527391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b')
+
+          assert.equal( response  , false );
+
+      });
+
+
+
+
 
 
   });
