@@ -37,7 +37,7 @@ var assert = require('assert');
         tokenAmount:200000000,
         relayerReward:100000000,
         expires:3365044,
-        nonce:0xc18f687c56f1b2749af7d6151fa351,
+        nonce:"0xc18f687c56f1b2749af7d6151fa351", //needs to be a string !!
         signature:"0x8ef27391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b"
     }
 
@@ -47,7 +47,7 @@ var assert = require('assert');
 
 
 
-      console.log(packet)
+      console.log('stored new packet' , packet)
 
       assert.ok( packet  );
       return ;

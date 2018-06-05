@@ -6,7 +6,7 @@
   "scripts": {
     "relay": "webpack && node index.js",
     "webpack": "webpack",
-    "test": "mocha",
+    "test": "mocha --timeout 10000",
     "dev": "webpack  && nodemon index.js",
     "webdev": "webpack-dev-server"
   },
@@ -30,6 +30,7 @@
     "babel-preset-es2016": "^6.24.1",
     "body-parser": "^1.18.3",
     "browserify": "^15.2.0",
+    "ethereumjs-util": "^5.2.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-loader": "^0.5.5",
     "jayson": "^2.0.5",
