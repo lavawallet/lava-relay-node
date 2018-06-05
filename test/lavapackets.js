@@ -12,7 +12,7 @@ var Web3 = require('web3')
 
 var web3 = new Web3()
 
-    web3.setProvider(new web3.providers.HttpProvider(INFURA_ROPSTEN_URL))
+web3.setProvider(new web3.providers.HttpProvider(INFURA_ROPSTEN_URL))
 
 
 var assert = require('assert');
@@ -50,8 +50,14 @@ var assert = require('assert');
       console.log(packet)
 
       assert.ok( packet  );
-   
+      return ;
 
     });
+
+
+      it('checks for valid signature', async function() {
+
+
+      });
 
   });
