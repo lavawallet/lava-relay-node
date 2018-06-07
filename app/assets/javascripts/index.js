@@ -9,9 +9,7 @@ import Vue from 'vue'
 import AlertRenderer from './alert-renderer'
 
 import RelayRenderer from './relay-renderer'
-
-import EthHelper from './ethhelper'
-
+ 
 
 import RelayDashboard from './relay-dashboard'
 
