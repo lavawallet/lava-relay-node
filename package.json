@@ -8,7 +8,8 @@
     "webpack": "webpack",
     "test": "mocha --timeout 10000",
     "dev": "webpack  && nodemon index.js",
-    "webdev": "webpack-dev-server"
+    "webdev": "webpack-dev-server",
+    "cmd": "node lib/command-scripts.js"
   },
   "repository": {
     "type": "git",

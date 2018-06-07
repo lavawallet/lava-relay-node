@@ -101,7 +101,7 @@ var lavaPeerInterface;
 
       });
 
-      it('checks for burned signature', async function() {
+      it('checks for burned signature as false ', async function() {
 
       //  console.log('methodd',ContractInterface.getWalletContract(web3,'test'))
           var response = await ContractInterface.getWalletContract(web3,'test').signatureBurned.call('0x8e527391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b')
@@ -111,6 +111,23 @@ var lavaPeerInterface;
       });
 
 
+
+
+
+      //submit the relay packet - use ganache
+
+      /*
+
+      it('checks for burned signature as true  ', async function() {
+
+      //  console.log('methodd',ContractInterface.getWalletContract(web3,'test'))
+          var response = await ContractInterface.getWalletContract(web3,'test').signatureBurned.call('0x8e527391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b')
+
+          assert.equal( response  , true  );
+
+      });
+
+      */
 
 
 
