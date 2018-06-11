@@ -11,6 +11,7 @@ var relayconfig = {
   profitMarginPercent: 20,
   web3provider: 'http://localhost:8545',
   allowTestPackets: true,
+  environment: 'test'
 }
 
 

@@ -13,7 +13,8 @@
             },
       "testnet": {
               "contracts": {
-                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x9d2cc383e677292ed87f63586086cff62a009010"}
+                "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x9d2cc383e677292ed87f63586086cff62a009010"},
+                "lavawallet": {"name":"LavaWallet", "blockchain_address":"0x1d0d66272025d7c59c40257813fc0d7ddf2c4826"}
               }
             }
     }

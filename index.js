@@ -12,14 +12,14 @@ var web3 = new Web3()
 
 
 const relayConfig = require('./relay.config').config
-const accountConfig = require('./account.config').account.relay
+const accountConfig = require('./account.config').account
 
 
 var redisInterface = require('./lib/redis-interface')
 var webServer = require('./lib/web-server')
 
 var LavaPeerInterface =  require('./lib/lava-peer-interface');
-var lavaPeerInterface = new LavaPeerInterface(redisInterface,relayConfig);
+var lavaPeerInterface = new LavaPeerInterface(redisInterface,relayConfig,accountConfig);
 
 
 
