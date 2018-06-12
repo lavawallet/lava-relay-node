@@ -3,7 +3,7 @@
 var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
 var INFURA_MAINNET_URL = 'https://mainnet.infura.io/gmXEVo5luMPUGPqg6mhy';
 
-const TEST_MODE = true;
+ 
 
 
 var Web3 = require('web3')
@@ -30,7 +30,7 @@ if(specified_web3 != null)
   web3.setProvider(new web3.providers.HttpProvider(specified_web3))
   console.log('using web3',specified_web3)
 }else{
-  if(TEST_MODE)
+  if(relayConfig.environment == 'development')
   {
     console.log("Using test mode!!! - Ropsten ")
     web3.setProvider(new web3.providers.HttpProvider(INFURA_ROPSTEN_URL))
