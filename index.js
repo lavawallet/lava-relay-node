@@ -3,7 +3,7 @@
 var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
 var INFURA_MAINNET_URL = 'https://mainnet.infura.io/gmXEVo5luMPUGPqg6mhy';
 
- 
+
 
 
 var Web3 = require('web3')
@@ -21,6 +21,8 @@ var webServer = require('./lib/web-server')
 var LavaPeerInterface =  require('./lib/lava-peer-interface');
 var lavaPeerInterface = new LavaPeerInterface(redisInterface,relayConfig,accountConfig);
 
+
+ 
 
 
 var specified_web3 = relayConfig.web3provider;
