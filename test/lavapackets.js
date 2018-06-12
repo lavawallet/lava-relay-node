@@ -110,8 +110,31 @@ var lavaPeerInterface;
 
       });
 
+        it('checks for targetSafeLowRewardTokens ', async function() {
+
+            var testPacket = { from: '0x530d92dfb5caa11347f26ee741910dee6eed3208',
+                to: '0xb0A84c52C7a701A2E87bcb6E28cD79d12e8DF490',
+                walletAddress: '0xcba65975b1c66586bfe7910f32377e0ee55f783e',
+                tokenAddress: '0xb6ed7644c69416d67b522e20bc294a9a9b405b31',
+                tokenAmount: '10000000',
+                relayerReward: '2000',
+                expires: '5783895',
+                nonce: '0x5865aa3c12a379b6d5271dc9b7cb9',
+                signature: '0xce8571661c794f41f49addf97e548feaa76c2dc2ee7bf970ad51d15184e494422e14e074c270fd2a8d8f98d921ba1cf9d30abed74501499baa3f432c93aa5d711b' }
 
 
+              var targetSafeLowRewardTokens = (0.08);
+
+              console.log('target safe low tokens', targetSafeLowRewardTokens)
+
+
+              var targetSafeLowRewardSatoastis =  (targetSafeLowRewardTokens * (10**8) );
+              // 0.0086
+              console.log('target safe low satoastis', targetSafeLowRewardSatoastis)
+
+              assert.equal( parseInt(testPacket.relayerReward) >= targetSafeLowRewardSatoastis , false) ;
+
+        });
 
 
       //submit the relay packet - use ganache
