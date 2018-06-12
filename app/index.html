@@ -101,10 +101,40 @@
 
 
 
+     <div id="queuedtx"  class="box background-secondary transaction-list " style="overflow-x:auto; min-height:480px;">
+       <div class='subtitle color-white'>Queued Lava Packets</div>
+       <table class='table table-dark zeroauto' v-cloak>
 
+         <thead>
+           <tr >
+             <td> From </td>
+             <td> To </td>
+             <td> Token Address </td>
+             <td> Token Amount </td>
+             <td> Relayer Reward </td>
+           </tr>
+         </thead>
+
+         <tbody>
+
+           <tr v-for="(item, index) in list"  v-bind:class="item.htmlClass">
+
+             <td>  {{ item.from  }} </td>
+             <td>  {{ item.to  }} </td>
+             <td>  {{ item.tokenAddress }} </td>
+             <td>  {{ item.tokenAmount  }} </td>
+             <td>  {{ item.relayerReward  }} </td>
+
+
+           </tr>
+
+         </tbody>
+       </table>
+
+     </div>
 
      <div id="packetslist"  class="box background-secondary transaction-list " style="overflow-x:auto; min-height:480px;">
-       <div class='subtitle color-white'>Lava Packets</div>
+       <div class='subtitle color-white'>Lava Packet History</div>
        <table class='table table-dark zeroauto' v-cloak>
 
          <thead>

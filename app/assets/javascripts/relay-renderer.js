@@ -16,6 +16,7 @@ var transfertxlist;
 var jumbotron;
 var stats;
 var packetslist;
+var queuedtxlist;
 
 export default class RelayRenderer {
 
@@ -48,50 +49,7 @@ export default class RelayRenderer {
       });
 
 
-      this.socket.on('activeTransactionData', function (data) {
-      //  console.log('got transactionData', JSON.stringify(data));
 
-      var solution_list = [];
-      var transfer_list = [];
-
-          data.sort(function(a, b) {
-              return b.block - a.block;
-            });
-
-        for(var i in data )
-        {
-          var formattedStatus =  self.getFormattedStatus(data[i].receiptData)
-          data[i].formattedStatus = formattedStatus;
-
-          if(formattedStatus == '?'){formattedStatus = 'unknown'}
-          data[i].htmlClass = "tx-row status-"+ formattedStatus;
-
-          if(data[i].txHash){
-            data[i].txURL = ("https://etherscan.io/tx/"+ data[i].txHash.toString());
-          }
-
-
-
-
-          if( data[i].txType=='solution'  )
-          {
-            solution_list.push( data[i] )
-          }
-          if( data[i].txType=='transfer'  )
-          {
-            transfer_list.push( data[i] )
-          }
-
-        }
-
-      // console.log('got transactionData', JSON.stringify(data));
-
-
-
-       Vue.set(solutiontxlist.transactions, 'tx_list',  solution_list.slice(0,25) )
-       Vue.set(transfertxlist.transactions, 'tx_list',  transfer_list.slice(0,25) )
-
-      });
 
       this.socket.on('relayData', function (data) {
 
@@ -106,6 +64,14 @@ export default class RelayRenderer {
           console.log('lava packets ', data )
 
           Vue.set(packetslist, 'list',  data )
+
+      });
+
+      this.socket.on('queuedTx', function (data) {
+
+          console.log('queued lava packets ', data )
+
+          Vue.set(queuedtxlist, 'list',  data )
 
       });
 
@@ -155,6 +121,13 @@ export default class RelayRenderer {
                   }
                });
 
+           queuedtxlist = new Vue({
+                el: '#queuedtx',
+                data:{
+                  list: []
+                 }
+              });
+
 
       var hashingDataSet= {
         labels: [5555,5556,5557],
@@ -176,7 +149,7 @@ export default class RelayRenderer {
       console.log('Emit to websocket')
        this.socket.emit('getRelayData');
        this.socket.emit('getLavaPackets');
-
+        this.socket.emit('getQueuedTx');
     }
 
 
@@ -195,7 +168,7 @@ export default class RelayRenderer {
 
       this.socket.emit('getRelayData');
       this.socket.emit('getLavaPackets');
-
+      this.socket.emit('getQueuedTx');
 
     }
 
