@@ -7,7 +7,7 @@
     "relay": "webpack && node index.js",
     "webpack": "webpack",
     "test": "mocha --timeout 10000",
-    "dev": "webpack  && nodemon index.js ropsten",
+    "dev": "webpack  && nodemon index.js ",
 
     "webdev": "webpack-dev-server",
     "cmd": "node lib/command-scripts.js"
