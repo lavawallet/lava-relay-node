@@ -4,7 +4,7 @@
       "mainnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},
-                "lavawallet": {"name":"LavaWallet", "blockchain_address":"0xcba65975b1c66586bfe7910f32377e0ee55f783e"}
+                "lavawallet": {"name":"LavaWallet", "blockchain_address":"0xf226b12c03514571c5a473b2627f5528da46d263"}
               }
             },
       "staging": {
