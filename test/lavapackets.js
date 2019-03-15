@@ -14,9 +14,15 @@ const LavaPacketUtils = require("../lib/lava-packet-utils");
 const relayConfig = require('../relay.config').config
 
 
+const lavaContractJSON = require('../contracts/LavaToken.json');
+const tokenContractJSON = require('../contracts/_0xBitcoinToken.json');
+
+
+
+
 var Web3 = require('web3')
 
-var web3 = new Web3()
+var web3 = new Web3( )
 
 web3.setProvider(new web3.providers.HttpProvider(INFURA_ROPSTEN_URL))
 
@@ -112,7 +118,20 @@ var lavaPeerInterface;
       it('checks for burned signature as false ', async function() {
 
       //  console.log('methodd',ContractInterface.getWalletContract(web3,'test'))
-          var response = await ContractInterface.getLavaContract(web3,'development').signatureBurned.call('0x8e527391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b')
+
+      /*  var balance = await web3.eth.getBalance('0x434360bef02ad8734d07e85875b6d9f2d322dd52');
+        console.log('BALANCE IS ', balance.toNumber())
+
+        var contractyBoi =   web3.eth.contract(lavaContractJSON.abi,'0x434360bef02ad8734d07e85875b6d9f2d322dd52')
+        console.log('cboi is ',contractyBoi)
+
+  console.log('w31 is ', web3.eth)
+      console.log('w3 is ', web3.eth.Contract)*/
+
+      var lavaContract = ContractInterface.getLavaContract(web3,'development');
+      console.log('lava contract is ', lavaContract)
+
+          var response = await lavaContract.signatureBurnStatus.call('0x8e527391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b')
 
           assert.equal( response  , false );
 
