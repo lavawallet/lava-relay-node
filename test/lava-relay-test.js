@@ -33,6 +33,9 @@ var assert = require('assert');
 
 var lavaPeerInterface;
 
+//ropsten test contract
+var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
+
 
   describe('Lava Packet', function() {
 
@@ -52,7 +55,7 @@ var lavaPeerInterface;
         relayAuthority:'0x0000000000000000000000000000000000000000',
         from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
         to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-        wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+        wallet:lavaContractAddress,
         tokens:200000000,
         relayerRewardTokens:100000000,
         expires:3365044,
@@ -81,7 +84,7 @@ var lavaPeerInterface;
               relayAuthority: '0x0000000000000000000000000000000000000000',
               from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              wallet:lavaContractAddress,
               tokens: 0 ,
               relayerRewardTokens: 0,
               expires:8365044,
@@ -111,7 +114,7 @@ var lavaPeerInterface;
               relayAuthority: '0x0000000000000000000000000000000000000000',
               from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              wallet:lavaContractAddress,
               tokens: 1000 ,
               relayerRewardTokens: 0,
               expires:8365044,
@@ -142,7 +145,7 @@ var lavaPeerInterface;
       var lavaContract = ContractInterface.getLavaContract(web3,'development');
       console.log('lava contract is ', lavaContract)
 
-          var response = await lavaContract.methods.signatureBurnStatus('0x0000000000000000000000000000000000000000').call()
+          var response = await lavaContract.methods.signatureHashBurnStatus('0x0000000000000000000000000000000000000000').call()
 
           assert.equal( response  , false );
 
@@ -155,7 +158,7 @@ var lavaPeerInterface;
               relayAuthority: '0x0000000000000000000000000000000000000000',
               from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              wallet:lavaContractAddress,
               tokens: 0 ,
               relayerRewardTokens: 0,
               expires:8365044,
@@ -189,7 +192,7 @@ var lavaPeerInterface;
           relayAuthority: '0x0',
           from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
           to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-          wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+          wallet:lavaContractAddress,
           tokens: 0 ,
           relayerRewardTokens: 0,
           expires:8365044,
@@ -225,7 +228,7 @@ var lavaPeerInterface;
               relayAuthority: '0x0',
               from: "0xB11ca87E32075817C82Cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x444360bef02ad8734d07e85875b6d9f2d322dd52",
+              wallet:lavaContractAddress,
               tokens: 0,
               relayerRewardTokens: 0,
               expires:336504400,
@@ -245,10 +248,46 @@ var lavaPeerInterface;
           var validPacket =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
           assert.equal( validPacket  , true );
 
-          var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
+         var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
           console.log('broadcast',response)
           assert.equal( response  , true );
 
+
+      });
+
+
+      it('submit the packet with approveandcall', async function() {
+
+
+            var packetData = {
+              methodName: 'mutate',
+              relayAuthority: '0x0',
+              from: "0xB11ca87E32075817C82Cc471994943a4290f4a14",
+              to: "0x5c6134d3f856c9008309a98d82eced344267add7",
+              wallet:lavaContractAddress,
+              tokens: 0,
+              relayerRewardTokens: 0,
+              expires:336504400,
+              nonce: LavaPacketUtils.getRandomNonce()  //needs to be a string !!
+
+          }
+
+
+          var packetDataHash = LavaPacketUtils.getLavaTypedDataHashFromPacket(packetData);
+
+          var pkey = accountConfig.privateKey;
+          var computedSig = LavaPacketUtils.signTypedData(packetDataHash,pkey)
+          packetData.signature = computedSig;
+
+
+
+          var validPacket =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
+          assert.equal( validPacket  , true );
+
+        /*  var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
+          console.log('broadcast',response)
+          assert.equal( response  , true );
+          */
 
       });
 

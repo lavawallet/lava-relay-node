@@ -10,13 +10,13 @@
       "staging": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                "lavatoken": {"name":"LavaToken", "blockchain_address":"0x434360bef02ad8734d07e85875b6d9f2d322dd52"}
+                "lavatoken": {"name":"LavaToken", "blockchain_address":"0x5c6134d3f856c9008309a98d82eced344267add7"}
               }
             },
       "testnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
-                "lavatoken": {"name":"LavaToken", "blockchain_address":"0x434360bef02ad8734d07e85875b6d9f2d322dd52"}
+                "lavatoken": {"name":"LavaToken", "blockchain_address":"0x5c6134d3f856c9008309a98d82eced344267add7"}
               }
             }
     }
