@@ -17,6 +17,8 @@ const relayConfig = require('../relay.config').config
 const lavaContractJSON = require('../contracts/LavaToken.json');
 const tokenContractJSON = require('../contracts/_0xBitcoinToken.json');
 
+const accountConfig = require('../account.config').account
+
 
 
 
@@ -131,7 +133,7 @@ var lavaPeerInterface;
       var lavaContract = ContractInterface.getLavaContract(web3,'development');
       console.log('lava contract is ', lavaContract)
 
-          var response = await lavaContract.signatureBurnStatus.call('0x8e527391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b')
+          var response = await lavaContract.methods.signatureBurnStatus('0x0000000000000000000000000000000000000000').call()
 
           assert.equal( response  , false );
 
@@ -184,7 +186,7 @@ var lavaPeerInterface;
               signature:"0x8ef27391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b"
           }
 
-          var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',web3,'development');
+          var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',4,accountConfig,web3,'development');
           console.log('broadcast',response)
           assert.equal( response  , true );
 
