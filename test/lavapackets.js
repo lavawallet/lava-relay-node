@@ -219,16 +219,17 @@ var lavaPeerInterface;
 
       it('submit the packet', async function() {
 
+
             var packetData = {
               methodName: 'approve',
               relayAuthority: '0x0',
               from: "0xB11ca87E32075817C82Cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              wallet:"0x444360bef02ad8734d07e85875b6d9f2d322dd52",
               tokens: 0,
               relayerRewardTokens: 0,
               expires:336504400,
-              nonce:"0xb18f687c56f1b2749af7d6151fa351" //needs to be a string !!
+              nonce: LavaPacketUtils.getRandomNonce()  //needs to be a string !!
 
           }
 
