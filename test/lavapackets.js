@@ -220,22 +220,31 @@ var lavaPeerInterface;
       it('submit the packet', async function() {
 
             var packetData = {
-              methodName: 'transfer',
+              methodName: 'approve',
               relayAuthority: '0x0',
-              from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
+              from: "0xB11ca87E32075817C82Cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
               wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
-              tokens: 0 ,
+              tokens: 0,
               relayerRewardTokens: 0,
-              expires:8365044,
-              nonce:"0xc18f687c56f1b2749af7d6151fa351", //needs to be a string !!
-              signature:"0x9c54e25406468f9e490ea406fb39d20e0d5c591221e53a1bb7cea6f9240f99eb514c4c15daa3a2fc56d61c1aa0e58ffb52907bacf580673e386ed63bbeb7dfc31c"
+              expires:336504400,
+              nonce:"0xb18f687c56f1b2749af7d6151fa351" //needs to be a string !!
+
           }
+
+
+          var packetDataHash = LavaPacketUtils.getLavaTypedDataHashFromPacket(packetData);
+
+          var pkey = accountConfig.privateKey;
+          var computedSig = LavaPacketUtils.signTypedData(packetDataHash,pkey)
+          packetData.signature = computedSig;
+
+
 
           var validPacket =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
           assert.equal( validPacket  , true );
 
-          var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',4,accountConfig,web3,'development');
+          var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
           console.log('broadcast',response)
           assert.equal( response  , true );
 
