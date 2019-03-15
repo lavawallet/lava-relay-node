@@ -17,7 +17,7 @@
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0x1ed72f8092005f7ac39b76e4902317bd0649aee9"},
                 "lavatoken": {"name":"LavaToken", "blockchain_address":"0x6302fac9ef9aad14ed529e939b3742d2141170ad"},
-                "demutator": {"name":"DeMutator", "blockchain_address":"0x55aba0dc370da80cf2ae9ba14f5237c8e3c257b6"}
+                "demutator": {"name":"DeMutator", "blockchain_address":"0x27fc9a5b7f3c8bb041a7b6e54afddea059159127"}
               }
             }
     }
