@@ -52,7 +52,7 @@ var lavaPeerInterface;
         relayAuthority:'0x0000000000000000000000000000000000000000',
         from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
         to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-        wallet:"0x1d0d66272025d7c59c40257813fc0d7ddf2c4826",
+        wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
         tokens:200000000,
         relayerRewardTokens:100000000,
         expires:3365044,
@@ -81,15 +81,24 @@ var lavaPeerInterface;
               relayAuthority: '0x0000000000000000000000000000000000000000',
               from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x1d0d66272025d7c59c40257813fc0d7ddf2c4826",
-              tokens:200000000,
-              relayerRewardTokens:100000000,
-              expires:3365044,
-              nonce:"0xc18f687c56f1b2749af7d6151fa351", //needs to be a string !!
-              signature:"0x8ef27391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b"
-          }
+              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              tokens: 0 ,
+              relayerRewardTokens: 0,
+              expires:8365044,
+              nonce:"0xc18f687c56f1b2749af7d6151fa351"
+             }
 
-          var response =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
+             var pkey = accountConfig.privateKey;
+
+             var packetDataHash = LavaPacketUtils.getLavaTypedDataHashFromPacket(packetData);
+
+             var computedSig = LavaPacketUtils.signTypedData(packetDataHash,pkey)
+
+             packetData.signature = computedSig;
+
+             console.log('!!!!!!!!!!!sig is ', computedSig)
+
+             var response =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
 
             assert.equal( response, true  );
       });
@@ -102,12 +111,12 @@ var lavaPeerInterface;
               relayAuthority: '0x0000000000000000000000000000000000000000',
               from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x1d0d66272025d7c59c40257813fc0d7ddf2c4826",
-              tokens:200000000,
-              relayerRewardTokens:100000000,
-              expires:3365044,
-              nonce:"0xc28f687c56f1b2749af7d6151fa351", //wrong nonce for sig
-              signature:"0x8ef27391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b"
+              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              tokens: 1000 ,
+              relayerRewardTokens: 0,
+              expires:8365044,
+              nonce:"0xc18f687c56f1b2749af7d6151fa351", //needs to be a string !!
+              signature:"0x9c54e25406468f9e490ea406fb39d20e0d5c591221e53a1bb7cea6f9240f99eb514c4c15daa3a2fc56d61c1aa0e58ffb52907bacf580673e386ed63bbeb7dfc31c"
           }
 
           var response =   LavaPacketUtils.lavaPacketHasValidSignature(packetData)
@@ -142,16 +151,17 @@ var lavaPeerInterface;
         it('checks for targetSafeLowRewardTokens ', async function() {
 
             var testPacket = {
-                methodName: 'transfer',
-                relayAuthority: '0x0000000000000000000000000000000000000000',
-                from: '0x530d92dfb5caa11347f26ee741910dee6eed3208',
-                to: '0xb0A84c52C7a701A2E87bcb6E28cD79d12e8DF490',
-                wallet: '0xcba65975b1c66586bfe7910f32377e0ee55f783e',
-                tokens: '10000000',
-                relayerRewardTokens: '2000',
-                expires: '5783895',
-                nonce: '0x5865aa3c12a379b6d5271dc9b7cb9',
-                signature: '0xce8571661c794f41f49addf97e548feaa76c2dc2ee7bf970ad51d15184e494422e14e074c270fd2a8d8f98d921ba1cf9d30abed74501499baa3f432c93aa5d711b' }
+              methodName: 'transfer',
+              relayAuthority: '0x0000000000000000000000000000000000000000',
+              from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
+              to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
+              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              tokens: 0 ,
+              relayerRewardTokens: 0,
+              expires:8365044,
+              nonce:"0xc18f687c56f1b2749af7d6151fa351", //needs to be a string !!
+              signature:"0x9c54e25406468f9e490ea406fb39d20e0d5c591221e53a1bb7cea6f9240f99eb514c4c15daa3a2fc56d61c1aa0e58ffb52907bacf580673e386ed63bbeb7dfc31c"
+          }
 
 
               var targetSafeLowRewardTokens = (0.08);
@@ -171,20 +181,59 @@ var lavaPeerInterface;
       //submit the relay packet - use ganache
 
 
+
+      it('verify the typehash', async function() {
+
+        var packetData = {
+          methodName: 'transfer',
+          relayAuthority: '0x0',
+          from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
+          to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
+          wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+          tokens: 0 ,
+          relayerRewardTokens: 0,
+          expires:8365044,
+          nonce:"0xc18f687c56f1b2749af7d6151fa351", //needs to be a string !!
+          }
+
+        var lavaContract = ContractInterface.getLavaContract(web3,'development');
+
+        var contractDataHash = await lavaContract.methods.getLavaTypedDataHash(
+          packetData.methodName,
+          packetData.relayAuthority,
+          packetData.from,
+          packetData.to,
+          packetData.wallet,
+          packetData.tokens,
+          packetData.relayerRewardTokens,
+          packetData.expires,
+          packetData.nonce
+        ).call()
+
+        var computedDataHash = LavaPacketUtils.getLavaTypedDataHashFromPacket(packetData);
+
+          assert.equal( contractDataHash  , '0x' + computedDataHash.toString('hex') );
+
+      });
+
+
       it('submit the packet', async function() {
 
             var packetData = {
               methodName: 'transfer',
-              relayAuthority: '0x0000000000000000000000000000000000000000',
+              relayAuthority: '0x0',
               from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
               to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
-              wallet:"0x1d0d66272025d7c59c40257813fc0d7ddf2c4826",
-              tokens:200000000,
-              relayerRewardTokens:100000000,
-              expires:3365044,
-              nonce:"0xc28f687c56f1b2749af7d6151fa351", //wrong nonce for sig
-              signature:"0x8ef27391a81f77244bf95df58737eecac386ab9a47acd21bdb63757adf71ddf878169c18e4ab7b71d60f333c870258a0644ac7ade789d59c53b0ab75dbcc87d11b"
+              wallet:"0x434360bef02ad8734d07e85875b6d9f2d322dd52",
+              tokens: 0 ,
+              relayerRewardTokens: 0,
+              expires:8365044,
+              nonce:"0xc18f687c56f1b2749af7d6151fa351", //needs to be a string !!
+              signature:"0x9c54e25406468f9e490ea406fb39d20e0d5c591221e53a1bb7cea6f9240f99eb514c4c15daa3a2fc56d61c1aa0e58ffb52907bacf580673e386ed63bbeb7dfc31c"
           }
+
+          var validPacket =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
+          assert.equal( validPacket  , true );
 
           var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',4,accountConfig,web3,'development');
           console.log('broadcast',response)
