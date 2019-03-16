@@ -1,7 +1,12 @@
 
 const $ = require('jquery');
 
+import EthHelper from './eth-helper'
+import LavaPacketRenderer from './lava-packet-renderer'
+var packetRenderer;
 
+
+var ethHelper;
 
 export default class RelayDashboard {
 
@@ -14,6 +19,14 @@ export default class RelayDashboard {
 
 
     renderer.init();
+
+    ethHelper = new EthHelper();
+    ethHelper.init();
+
+    packetRenderer = new LavaPacketRenderer();
+    packetRenderer.init(ethHelper);
+
+
   }
 
 }

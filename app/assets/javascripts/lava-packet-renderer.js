@@ -6,10 +6,12 @@ var web3utils = require('web3-utils')
 var sigUtil = require('eth-sig-util')
 
 
+
 const relayConfig = require('../../../relay.config').config
 
-//const LavaWalletHelper = require('./lava-wallet-helper')
 import LavaWalletHelper from './lava-wallet-helper'
+
+import TokenUtils from './token-utils'
 
 const ContractInterface = require('../../../lib/contract-interface')
 
@@ -19,12 +21,14 @@ var actionContainer;
 export default class LavaPacketRenderer {
 
 
-  async init(alertRenderer, ethHelper)
+  async init( ethHelper )
   {
 
     console.log('init lava packet renderer')
 
     var env = relayConfig.environment;
+
+    this.ethHelper=ethHelper;
 
     var lavaContractAddress = ContractInterface.getLavaContractAddress( env )
 
@@ -41,11 +45,13 @@ export default class LavaPacketRenderer {
              data: {
                      selectedActionAsset: {name: 'nil'},
                      shouldRender: false,
-                     supportsDelegateCallDeposit: false,
-                     lavaEnabled:false,
+                     supportsDelegateCallMutation: false,
+                     supportsUnMutation: false,
+                     lavaReady:false,
                      selectedActionType: defaultAction,
                      approveTokenQuantity: 0,
-                     depositTokenQuantity: 0,
+                     mutateTokenQuantity: 0,
+                     unmutateTokenQuantity: 0,
                      approveAndDepositTokenQuantity: 0,
                      withdrawTokenQuantity: 0,
                      transferTokenMethod: 'transfer',
@@ -63,25 +69,10 @@ export default class LavaPacketRenderer {
 
         }
 
-
-
-
-        var defaultTokenData = relayConfig.tokens
-
-
-       console.log(defaultTokenData)
-
-        defaultTokenData.map(t => t.icon_url = "/app/assets/images/token_icons/"+t.address+".png"   )
-
-       if(relayConfig.env == 'development')
-       {
-         defaultTokenData.map(t => t.address = t.test_address   )
-       }
+       var defaultTokenData = TokenUtils.getAllTokensData();
 
 
        this.registerDropEvents()
-       console.log(defaultTokenData)
-
 
 
         var assetList = new Vue({
@@ -128,17 +119,22 @@ export default class LavaPacketRenderer {
       {
         var self = this;
 
-        var assetData = this.getAssetDataFromAddress(address)
+        var assetData =  TokenUtils.getTokenDataByAddress(address)// this.getAssetDataFromAddress(address)
 
 
         await Vue.set(actionContainer, "selectedActionAsset" , assetData);
 
-        var supportsDelegateCallDeposit = (assetData.supportsDelegateCallDeposit == true)
 
+        ///supportsDelegateCallMutation: false,
+        //supportsUnMutation: false,
+        //lavaEnabled:false,
+
+        var supportsDelegateCallMutation = (assetData.supportsDelegateCallMutation == true)
+        var supportsUnMutation = (assetData.supportsUnMutation == true)
         var lavaReady = (assetData.lavaReady == true)
 
-        await Vue.set(actionContainer, "supportsDelegateCallDeposit" , supportsDelegateCallDeposit);
-
+        await Vue.set(actionContainer, "supportsDelegateCallMutation" , supportsDelegateCallMutation);
+        await Vue.set(actionContainer, "supportsUnMutation" , supportsUnMutation);
         await Vue.set(actionContainer, "lavaReady" , lavaReady);
 
         await Vue.set(actionContainer, "shouldRender" , true);
@@ -148,6 +144,8 @@ export default class LavaPacketRenderer {
 
         Vue.nextTick(function () {
            self.registerActionContainerClickHandler();
+
+           self.selectActiveAction("")
         })
 
       }
@@ -173,6 +171,7 @@ export default class LavaPacketRenderer {
           var self = this;
 
 
+
           $('.tab-action').off();
           $('.tab-action').on('click',  function(){
 
@@ -192,7 +191,7 @@ export default class LavaPacketRenderer {
             var tokenDecimals = selectedActionAsset.decimals;
 
               console.log('approve ', tokenAddress,  approveAmount)
-               LavaWalletHelper.executeTokenAction(tokenAddress, 'approve', approveAmount,function(error,response){
+               LavaWalletHelper.executeTokenAction(self.ethHelper,tokenAddress, 'approve', approveAmount,function(error,response){
                   console.log(response)
                });
 
@@ -206,20 +205,24 @@ export default class LavaPacketRenderer {
 
 
 
-          $('.btn-action-deposit').off();
-          $('.btn-action-deposit').on('click',  function(){
+          $('.btn-action-mutate').off();
+          $('.btn-action-mutate').on('click',  function(){
 
             var selectedActionAsset = actionContainer.selectedActionAsset ;
 
             var tokenAddress = selectedActionAsset.address;
-            var depositAmount = actionContainer.depositTokenQuantity;
+            var mutateAmount = actionContainer.mutateTokenQuantity;
             var tokenDecimals = selectedActionAsset.decimals;
 
 
-                console.log('deposit ', tokenAddress,  depositAmount)
-                LavaWalletHelper.depositToken(tokenAddress, depositAmount, tokenDecimals, function(error,response){
+            console.log('mutate ', tokenAddress,  mutateAmount)
+            LavaWalletHelper.executeTokenAction(self.ethHelper,tokenAddress, 'mutate', mutateAmount,function(error,response){
                console.log(response)
             });
+
+              /*  LavaWalletHelper.depositToken(tokenAddress, mutateAmount, tokenDecimals, function(error,response){
+               console.log(response)
+            });*/
 
           });
 
@@ -287,17 +290,6 @@ export default class LavaPacketRenderer {
           await  Vue.set(actionContainer, "lavaPacketExists" , false);
         }
 
-        getAssetDataFromAddress(address)
-        {
-          console.log('get asset data ',address);
-
-          var matchingToken  = relayConfig.tokens.find(t => t.address == address );
-
-          console.log(matchingToken);
-
-          return matchingToken  ;
-
-        }
 
 
         registerDropEvents()
@@ -357,7 +349,7 @@ export default class LavaPacketRenderer {
                       return function(e) {
                        var parsedFileJson = JSON.parse(e.target.result);
 
-                       self.initiateLavaPackTransaction( JSON.parse( parsedFileJson) )
+                       LavaWalletHelper.initiateLavaPackTransaction( JSON.parse( parsedFileJson) )
 
                       };
                     })(file);
@@ -368,12 +360,6 @@ export default class LavaPacketRenderer {
         }
 
 
-        async initiateLavaPackTransaction(lavaPacket)
-        {
-          console.log('initiate', lavaPacket);
-          console.log('to', lavaPacket.to);
 
-          //DO IN ANOTHER LIB
-        }
 
 }

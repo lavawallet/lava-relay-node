@@ -112,7 +112,33 @@
 
 
 
+     <div id="eth-container" class="eth-container box" v-cloak    >
 
+       <div class="columns">
+              <div class="column">
+
+                <div v-if="!connected" >
+                  <div class="button is-secondary btn-action-connect-web3"> Connect To Metamask </div>
+                </div>
+
+              </div>
+              <div class="column">
+
+                <div v-if="web3address">
+                Connected: <a v-bind:href='etherscanURL'>{{web3address}}</a>
+                </div>
+              </div>
+       </div>
+
+       <div class="columns alert-container" v-if="errorMessage" >
+
+            {{ errorMessage }}
+
+      </div>
+
+
+
+     </div>
 
 
              <div id="action-container" class="action-container box" v-cloak v-if="shouldRender"    >
@@ -128,19 +154,19 @@
 
 
                    <ul class="columns">
-                     <li data-action-type="deposit"  v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true, 'is-active':(selectedActionType=='deposit')  } ">
+                     <li data-action-type="mutate" v-if="supportsDelegateCallMutation" v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true, 'is-active':(selectedActionType=='mutate')  } ">
                        <a>
                          <span class="icon is-small">  <i class="fas fa-download"></i>   </span>
-                         <span>Deposit</span>
+                         <span>Mutate</span>
                        </a>
                      </li>
-                     <li data-action-type="withdraw" v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true,  'is-active':(selectedActionType=='withdraw')  } ">
+                     <li data-action-type="unmutate" v-if="supportsUnMutation" v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true,  'is-active':(selectedActionType=='unmutate')  } ">
                        <a>
                          <span class="icon is-small one-third"> <i class="fas fa-upload"></i> </span>
-                         <span>Withdraw</span>
+                         <span>Unmutate</span>
                        </a>
                      </li>
-                     <li data-action-type="lavatransfer" v-bind:class="{  'tab-action':true, 'column':true, 'column-button':true,  'is-active':(selectedActionType=='lavatransfer')  } ">
+                     <li data-action-type="lavatransfer" v-if="lavaReady" v-bind:class="{  'tab-action':true, 'column':true, 'column-button':true,  'is-active':(selectedActionType=='lavatransfer')  } ">
                        <a>
                          <span class="icon is-small one-third"> <i class="fas fa-fast-forward"></i> </span>
                          <span>Lava Transfer</span>
@@ -151,7 +177,7 @@
                  </div>
 
                </div>
-               <div class="deposit-container" v-if="(selectedActionType=='deposit')" v-cloak>
+               <div class="mutate-container" v-if="(selectedActionType=='mutate')" v-cloak>
 
 
                    <div class="subtitle-banner has-background-info has-text-light"> External Balance: {{ selectedActionAsset.wallet_balance_formatted }} </div>
@@ -159,32 +185,14 @@
 
 
 
-                   <div class="input-container padding-md" v-if="!supportsDelegateCallDeposit" >
-                     <div class="label">Approve Tokens</div>
-
-                     <div class="columns">
-                       <div class="column">
-                         <div class="form-group">
-                             <input type="text" class="input input-short is-primary " v-model="approveTokenQuantity" placeholder="token amount">
-                             <div class="button is-primary btn-action-approve"> Approve </div>
-                         </div>
-                       </div>
-                       <div class="column">
-                           <div class="is-size-6"> Quantity Approved: {{ selectedActionAsset.approved_balance_formatted }} </div>
-                       </div>
-                     </div>
-                   </div>
-
-
-
-                  <div class="input-container padding-md" v-if="!supportsDelegateCallDeposit">
-                    <div class="label">Deposit Tokens</div>
+                  <div class="input-container padding-md" v-if="supportsDelegateCallMutation">
+                    <div class="label">Mutate Tokens To Lava</div>
 
                       <div class="columns">
                           <div class="column">
                             <div class="form-group">
-                              <input class="input input-short is-primary" v-model="depositTokenQuantity" placeholder="token amount">
-                               <div class="button is-primary btn-action-deposit"> Deposit </div>
+                              <input class="input input-short is-primary" v-model="mutateTokenQuantity" placeholder="token amount">
+                               <div class="button is-primary btn-action-mutate"> Mutate </div>
                             </div>
                            </div>
                          <div class="column">
@@ -193,7 +201,8 @@
                     </div>
                   </div>
 
-                  <div class="input-container padding-md" v-if="supportsDelegateCallDeposit">
+ <!--
+                  <div class="input-container padding-md" v-if="supportsDelegateCallMutation">
                     <div class="label">Deposit Tokens</div>
 
                       <div class="columns">
@@ -208,22 +217,22 @@
                          </div>
                     </div>
                   </div>
-
+-->
 
 
                </div>
-               <div class="withdraw-container" v-if="(selectedActionType=='withdraw')" v-cloak>
+               <div class="unmutate-container" v-if="(selectedActionType=='unmutate')" v-cloak v-if="supportsUnMutation">
 
                  <div class="subtitle-banner has-background-info has-text-light"> External Balance: {{ selectedActionAsset.wallet_balance_formatted }} </div>
 
                    <div class="input-container padding-md">
-                     <div class="label">Withdraw Tokens</div>
+                     <div class="label">Unmutate Tokens To 0xBTC</div>
 
                        <div class="columns">
                            <div class="column">
                              <div class="form-group">
-                               <input class="input input-short is-primary" v-model="withdrawTokenQuantity" placeholder="token amount">
-                                <div class="button is-primary btn-action-withdraw"> Withdraw </div>
+                               <input class="input input-short is-primary" v-model="unmutateTokenQuantity" placeholder="token amount">
+                                <div class="button is-primary btn-action-unmutate"> Unmutate </div>
                              </div>
                             </div>
                           <div class="column">

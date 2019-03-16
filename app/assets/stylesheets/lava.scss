@@ -4,6 +4,13 @@
 
 .action-container
 {
+  background-color: #423f3a;
+  color:#eee;
+
+  .label
+  {
+    color: #ccc;
+  }
 
   .token-titlebar
   {
@@ -21,6 +28,20 @@
 
    }
 
+   .column-button
+   {
+      a
+      {
+        background-color:white;
+      }
+   }
+
+}
+
+.eth-container
+{
+  background-color: #423f3a;
+  color:#eee;
 }
 
 .hide-overflow

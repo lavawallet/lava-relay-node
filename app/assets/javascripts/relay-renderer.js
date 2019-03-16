@@ -3,8 +3,6 @@ const $ = require('jquery');
 import Vue from 'vue';
 
 
-import LavaPacketRenderer from './lava-packet-renderer'
-var packetRenderer;
 
 const relayConfig = require('../../../relay.config').config
 var io = require('socket.io-client');
@@ -131,10 +129,6 @@ export default class RelayRenderer {
                  }
               });
 
-
-
-      packetRenderer = new LavaPacketRenderer();
-      packetRenderer.init();
 
 
 

@@ -11,6 +11,9 @@ var _0xBitcoinABI = require('../../../contracts/_0xBitcoinToken.json')
 var erc20TokenABI = require('../../../contracts/ERC20Interface.json')
 
 
+const relayConfig = require('../../../relay.config').config
+
+import TokenUtils from './token-utils'
 
 var defaultTokenData;
 
@@ -349,11 +352,40 @@ export default class LavaWalletHelper {
   }
 
 
-  static async executeTokenAction(tokenAddress, actionName, amountFormatted, callback    )
-  {
-    console.log('execute token action', actionName)
-  ///  var tokenData =
+  //var actions = ["mutate","unmutate","lava transfer"]
 
+
+  static async executeTokenAction(ethHelper,tokenAddress, actionName, amountFormatted, callback)
+  {
+
+      ///  var tokenData =
+
+      var tokenData = TokenUtils.getTokenDataByAddress( tokenAddress );
+
+      console.log('ethHelper', ethHelper)
+
+        console.log('execute token action', actionName, tokenData)
+
+      var tokenDecimals = tokenData.decimals;
+      var amountRaw = TokenUtils.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
+      var tokenSymbol = tokenData.symbol;
+
+      //var lavaReady = (tokenData.lavaReady == true)
+      //var supportsDelegateCallDeposit = (tokenData.supportsDelegateCallMutate == true)
+
+      if(tokenData.lavaReady)
+      {
+
+      }
+
+      if(tokenData.supportsDelegateCallMutation == true)
+      {
+
+        if(actionName == 'mutate')
+        {
+           LavaWalletHelper.delegateCallMutateToken(ethHelper,tokenSymbol,amountRaw,callback)
+        }
+      }
 
   }
 
@@ -377,14 +409,17 @@ export default class LavaWalletHelper {
 
   }
 
-  async depositToken(tokenAddress,amountFormatted,tokenDecimals,callback)
+  static async delegateCallMutateToken(ethHelper,tokenSymbol,amountRaw,callback)
   {
-     console.log('deposit token',tokenAddress,amountRaw);
+     console.log('mutate token',tokenSymbol,amountRaw);
 
-     var amountRaw = this.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
+     var tokenData = TokenUtils.getTokenDataBySymbol( tokenSymbol );
+     var mutatesToToken = TokenUtils.getTokenDataBySymbol(tokenData.mutates_to)
 
-
-     var contract = this.ethHelper.getWeb3ContractInstance(
+     var contract =  ethHelper.getTokenContractInstance(tokenData);
+      console.log(contract)
+     /*
+     var contract =  ethHelper.getWeb3ContractInstance(
        this.web3,
        this.lavaWalletContract.blockchain_address,
        lavaContractABI.abi
@@ -395,6 +430,11 @@ export default class LavaWalletHelper {
      var from = this.web3.eth.accounts[0];
 
      contract.depositTokens.sendTransaction( from, tokenAddress, amountRaw ,   callback);
+    */
+
+    var from = this.web3.eth.accounts[0];
+    contract.approveAndCall.sendTransaction( from, tokenAddress, amountRaw ,   callback);
+
 
   }
 
@@ -505,6 +545,22 @@ export default class LavaWalletHelper {
 
 
   }
+
+
+
+  static async initiateLavaPackTransaction(lavaPacket)
+   {
+     console.log('initiate', lavaPacket);
+     console.log('to', lavaPacket.to);
+
+     //DO IN ANOTHER LIB
+
+
+
+
+   }
+
+
 
   async broadcastLavaPacket(lavaPacketString)
   {
@@ -649,36 +705,7 @@ export default class LavaWalletHelper {
   }
 
   //maybe use web3 ??
-  static getDecimalsOfToken(token_address)
-  {
 
-    if(token_address!= 0 && token_address.toLowerCase() == _0xBitcoinContract.blockchain_address.toLowerCase())
-    {
-      return 8;
-    }
-
-    return 18;
-
-  }
-
-
-  static getRawFromDecimalFormat(amountFormatted,decimals)
-  {
-    var amountRaw = amountFormatted * Math.pow(10,decimals)
-
-    amountRaw = Math.floor(amountRaw)
-
-    return amountRaw;
-  }
-
-  static formatAmountWithDecimals(amountRaw,decimals)
-  {
-    var amountFormatted = amountRaw / (Math.pow(10,decimals) * 1.0)
-
-  //  amountFormatted = Math.round(amountFormatted,decimals)
-
-    return amountFormatted;
-  }
 
 
 }
