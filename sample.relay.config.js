@@ -29,7 +29,8 @@ var relayconfig = {
 
     }
   ],
-  priceOracleURL: null,
+  websocketsPort: 2086, //used for Vue frontend
+  priceOracleURL: null, //uses mercatox by default
   minGasPriceWei: 10,
   maxGasPriceWei: 6,
   profitMarginPercent: 5,

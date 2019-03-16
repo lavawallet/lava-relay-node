@@ -33,7 +33,9 @@ export default class RelayRenderer {
 
       var current_hostname = window.location.hostname;
 
-      const socketServer = 'http://'+current_hostname+':4000';
+      var port = relayConfig.websocketsPort || 4000;
+
+      const socketServer = 'http://'+current_hostname+':'+port;
 
       const options = {transports: ['websocket'], forceNew: true};
       this.socket = io(socketServer, options);
