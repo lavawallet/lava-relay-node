@@ -8,6 +8,9 @@ var sigUtil = require('eth-sig-util')
 
 const relayConfig = require('../../../relay.config').config
 
+//const LavaWalletHelper = require('./lava-wallet-helper')
+import LavaWalletHelper from './lava-wallet-helper'
+
 const ContractInterface = require('../../../lib/contract-interface')
 
 import Vue from 'vue'
@@ -176,6 +179,103 @@ export default class LavaPacketRenderer {
             var actionType = $(this).data('action-type');
 
             self.selectActiveAction(actionType);
+
+          });
+
+          $('.btn-action-approve').off();
+          $('.btn-action-approve').on('click',  function(){
+
+            var selectedActionAsset = actionContainer.selectedActionAsset ;
+
+            var tokenAddress = selectedActionAsset.address;
+            var approveAmount = actionContainer.approveTokenQuantity;
+            var tokenDecimals = selectedActionAsset.decimals;
+
+              console.log('approve ', tokenAddress,  approveAmount)
+               LavaWalletHelper.executeTokenAction(tokenAddress, 'approve', approveAmount,function(error,response){
+                  console.log(response)
+               });
+
+
+            //  LavaWalletHelper.approveToken(tokenAddress, approveAmount, tokenDecimals, function(error,response){
+            //   console.log(response)
+            //});
+
+          });
+
+
+
+
+          $('.btn-action-deposit').off();
+          $('.btn-action-deposit').on('click',  function(){
+
+            var selectedActionAsset = actionContainer.selectedActionAsset ;
+
+            var tokenAddress = selectedActionAsset.address;
+            var depositAmount = actionContainer.depositTokenQuantity;
+            var tokenDecimals = selectedActionAsset.decimals;
+
+
+                console.log('deposit ', tokenAddress,  depositAmount)
+                LavaWalletHelper.depositToken(tokenAddress, depositAmount, tokenDecimals, function(error,response){
+               console.log(response)
+            });
+
+          });
+
+
+          $('.btn-action-withdraw').off();
+          $('.btn-action-withdraw').on('click',  function(){
+
+            var selectedActionAsset = actionContainer.selectedActionAsset ;
+
+            var tokenAddress = selectedActionAsset.address;
+            var withdrawAmount = actionContainer.withdrawTokenQuantity;
+            var tokenDecimals = selectedActionAsset.decimals;
+
+
+                console.log('withdraw ', tokenAddress,  withdrawAmount)
+                self.withdrawToken(tokenAddress, withdrawAmount, tokenDecimals, function(error,response){
+               console.log(response)
+            });
+
+          });
+
+          $('.btn-action-approve-and-deposit').off();
+          $('.btn-action-approve-and-deposit').on('click',  function(){
+
+            var selectedActionAsset = actionContainer.selectedActionAsset ;
+
+            var tokenAddress = selectedActionAsset.address;
+            var depositAmount = actionContainer.approveAndDepositTokenQuantity;
+            var tokenDecimals = selectedActionAsset.decimals;
+
+
+                console.log('approve and deposit ', tokenAddress,  depositAmount)
+              self.approveAndDepositToken(tokenAddress, depositAmount, tokenDecimals, function(error,response){
+               console.log(response)
+            });
+
+          });
+
+          $('.btn-action-lava-transfer').off();
+          $('.btn-action-lava-transfer').on('click',  function(){
+
+            var selectedActionAsset = actionContainer.selectedActionAsset ;
+
+            var tokenAddress = selectedActionAsset.address;
+            var transferAmount = actionContainer.transferTokenQuantity;
+            var transferRecipient = actionContainer.transferTokenRecipient;
+            var transferRelayReward = actionContainer.transferTokenRelayReward;
+            var tokenDecimals = selectedActionAsset.decimals;
+
+            var method = actionContainer.transferTokenMethod; //could also be withdraw or approve
+
+
+                  console.log('lava transfer gen ', tokenAddress,  transferAmount, transferRecipient)
+                  self.generateLavaTransaction(method,tokenAddress, transferAmount, transferRecipient, transferRelayReward, tokenDecimals, function(error,response){
+                 console.log(response)
+            });
 
           });
 
