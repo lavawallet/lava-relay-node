@@ -510,7 +510,7 @@ export default class LavaWalletHelper {
   //  console.log('lava signature',msgParams,signature)
 
     var packetJson = LavaPacketUtils.getLavaPacket(
-      method,from,to,walletAddress,tokenAddress,tokenAmount,
+      method,relayAuthority,from,to,walletAddress,tokenAmount,
       relayerReward,expires,nonce,signature)
 
       var lavaPacketString = JSON.stringify(packetJson);
