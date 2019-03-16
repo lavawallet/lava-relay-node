@@ -3,9 +3,6 @@ const $ = require('jquery');
 import Vue from 'vue';
 
 
-import LavaPacketRenderer from './lava-packet-renderer'
-var packetRenderer;
-
 const relayConfig = require('../../../relay.config').config
 var io = require('socket.io-client');
 
@@ -21,12 +18,21 @@ var stats;
 var packetslist;
 var queuedtxlist;
 
-export default class RelayRenderer {
+export default class HomeRenderer {
+
+
 
     init( )
     {
-
       var self = this;
+
+      setInterval( function(){
+           this.update();
+      },5*1000);
+
+
+
+
 
       this.transactionListData = {
         txData: [ ]
@@ -132,9 +138,11 @@ export default class RelayRenderer {
               });
 
 
+      var hashingDataSet= {
+        labels: [5555,5556,5557],
+        points: [0,0,0]
+      }
 
-      packetRenderer = new LavaPacketRenderer();
-      packetRenderer.init();
 
 
 

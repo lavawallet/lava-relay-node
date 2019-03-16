@@ -111,6 +111,230 @@
 
 
 
+
+
+
+
+             <div id="action-container" class="action-container box" v-cloak v-if="shouldRender"    >
+               <div class="token-titlebar flex-bar">
+                     <div class="token-title flex-start"> {{ selectedActionAsset.name }} </div>
+
+                     <div class="token-icon flex-end"> <img  v-bind:src="selectedActionAsset.icon_url" height="42" width="42" ></img> </div>
+               </div>
+               <div class="action-tabs-bar">
+
+                 <div class="tabs is-toggle hide-overflow"  >
+
+
+
+                   <ul class="columns">
+                     <li data-action-type="deposit"  v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true, 'is-active':(selectedActionType=='deposit')  } ">
+                       <a>
+                         <span class="icon is-small">   <i class="material-icons">file_download</i> </span>
+                         <span>Deposit</span>
+                       </a>
+                     </li>
+                     <li data-action-type="withdraw" v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true,  'is-active':(selectedActionType=='withdraw')  } ">
+                       <a>
+                         <span class="icon is-small one-third"> <i class="material-icons">file_upload</i> </span>
+                         <span>Withdraw</span>
+                       </a>
+                     </li>
+                     <li data-action-type="lavatransfer" v-bind:class="{  'tab-action':true, 'column':true, 'column-button':true,  'is-active':(selectedActionType=='lavatransfer')  } ">
+                       <a>
+                         <span class="icon is-small one-third"> <i class="material-icons">fast_forward</i> </span>
+                         <span>Lava Transfer</span>
+                       </a>
+                     </li>
+
+                   </ul>
+                 </div>
+
+               </div>
+               <div class="deposit-container" v-if="(selectedActionType=='deposit')" v-cloak>
+
+
+                   <div class="subtitle-banner has-background-info has-text-light"> External Balance: {{ selectedActionAsset.wallet_balance_formatted }} </div>
+
+
+
+
+                   <div class="input-container padding-md" v-if="!supportsDelegateCallDeposit" >
+                     <div class="label">Approve Tokens</div>
+
+                     <div class="columns">
+                       <div class="column">
+                         <div class="form-group">
+                             <input type="text" class="input input-short is-primary " v-model="approveTokenQuantity" placeholder="token amount">
+                             <div class="button is-primary btn-action-approve"> Approve </div>
+                         </div>
+                       </div>
+                       <div class="column">
+                           <div class="is-size-6"> Quantity Approved: {{ selectedActionAsset.approved_balance_formatted }} </div>
+                       </div>
+                     </div>
+                   </div>
+
+
+
+                  <div class="input-container padding-md" v-if="!supportsDelegateCallDeposit">
+                    <div class="label">Deposit Tokens</div>
+
+                      <div class="columns">
+                          <div class="column">
+                            <div class="form-group">
+                              <input class="input input-short is-primary" v-model="depositTokenQuantity" placeholder="token amount">
+                               <div class="button is-primary btn-action-deposit"> Deposit </div>
+                            </div>
+                           </div>
+                         <div class="column">
+                             <div class="is-size-6"> Lava Balance: {{ selectedActionAsset.lava_balance_formatted }} </div>
+                         </div>
+                    </div>
+                  </div>
+
+                  <div class="input-container padding-md" v-if="supportsDelegateCallDeposit">
+                    <div class="label">Deposit Tokens</div>
+
+                      <div class="columns">
+                          <div class="column">
+                            <div class="form-group">
+                              <input class="input input-short is-primary" v-model="approveAndDepositTokenQuantity" placeholder="token amount">
+                               <div class="button is-primary btn-action-approve-and-deposit"> Deposit </div>
+                            </div>
+                           </div>
+                         <div class="column">
+                             <div class="is-size-6"> Lava Balance: {{ selectedActionAsset.lava_balance_formatted }} </div>
+                         </div>
+                    </div>
+                  </div>
+
+
+
+               </div>
+               <div class="withdraw-container" v-if="(selectedActionType=='withdraw')" v-cloak>
+
+                 <div class="subtitle-banner has-background-info has-text-light"> External Balance: {{ selectedActionAsset.wallet_balance_formatted }} </div>
+
+                   <div class="input-container padding-md">
+                     <div class="label">Withdraw Tokens</div>
+
+                       <div class="columns">
+                           <div class="column">
+                             <div class="form-group">
+                               <input class="input input-short is-primary" v-model="withdrawTokenQuantity" placeholder="token amount">
+                                <div class="button is-primary btn-action-withdraw"> Withdraw </div>
+                             </div>
+                            </div>
+                          <div class="column">
+                              <div class="is-size-6"> Lava Balance: {{ selectedActionAsset.lava_balance_formatted }} </div>
+                          </div>
+                     </div>
+                 </div>
+
+
+               </div>
+               <div class="lava-transfer-container" v-if="(selectedActionType=='lavatransfer')" v-cloak>
+
+                 <div class="subtitle-banner has-background-orange has-text-light"> Lava Balance: {{ selectedActionAsset.lava_balance_formatted }} </div>
+
+                 <div class="input-container padding-md">
+                 <div class="label">Transfer Tokens</div>
+
+                   <p> Generate a signed Lava Transfer Message.  This message can be submitted to the Ethereum network by anyone, at which point the tokens will be transferred to the recipient's Lava Balance.  </p>
+
+
+                   <div class="whitespace-sm"></div>
+
+
+                     <div class="columns">
+                         <div class="column">
+
+                           <div class="form-group padding-md">
+                               <div class="label">Amount</div>
+                               <input class="input input-short is-primary" v-model="transferTokenQuantity" placeholder="token amount">
+                           </div>
+
+                           <div class="form-group padding-md">
+                               <div class="label">Method</div>
+
+                              <div class="select">
+                                 <select class=" " onchange=" " v-model="transferTokenMethod" placeholder="lava method">
+                                   <option>transfer</option>
+                                   <option>withdraw</option>
+                                </select>
+                              </div>
+                           </div>
+
+                           <div class="form-group padding-md">
+                               <div class="label">Recipient</div>
+                               <input class="input input-short is-primary" v-model="transferTokenRecipient" placeholder="token recipient">
+                           </div>
+                           <div class="form-group padding-md">
+                               <div class="label">Relay Reward (tokens)</div>
+                               <input class="input input-short is-primary" v-model="transferTokenRelayReward" placeholder="token relay reward">
+                           </div>
+
+                           <div class="whitespace-sm"></div>
+                             <div class="button is-primary btn-action-lava-transfer"> Sign </div>
+
+                          </div>
+                        <div class="column">
+                            <div class="is-size-6">   </div>
+
+                            <p v-if="lavaPacketExists"> Specify the URL for a Lava Network Node and broadcast this packet to the Lava Network Relayers.  They will submit the packet to the Ethereum Network if the reward is high enough.  </p>
+
+                            <div class="form-group padding-md" v-if="lavaPacketExists">
+                                <div class="label">Relay Node URL</div>
+                                <input class="input input-short is-primary" v-model="relayNodeURL" placeholder="xxx.xxx.xxx.xxx:yyyy">
+
+                                  <div class="whitespace-sm"></div>
+
+                                <div id="btn-broadcast-lava-packet" v-if="lavaPacketExists">
+                                  <div class="button is-primary btn-broadcast-lava-packet">Broadcast Lava Packet</div>
+                                </div>
+
+                                <div class="whitespace-sm"></div>
+
+                                <div class="subtitle color-primary has-text-centered" v-cloak v-if="lavaPacketExists" >
+                                  {{ broadcastMessage }}
+                                </div>
+                            </div>
+
+
+
+
+                           <div class="whitespace-sm"></div>
+
+                            <div class="form-group padding-md" v-if="lavaPacketExists">
+                                <div class="label">Lava Packet Data</div>
+                                <textarea class="textarea" placeholder="Lava packet data" rows="10"  v-model="lavaPacketData" ></textarea>
+
+                            </div>
+
+
+
+
+                                    <div class="whitespace-sm"></div>
+
+                                    <div id="btn-download-lava-packet" v-if="lavaPacketExists">
+                                    </div>
+                        </div>
+                   </div>
+                </div>
+
+
+               </div>
+
+             </div>
+
+
+
+
+
+
+
+
      <div id="queuedtx"  class="box background-secondary transaction-list " style="overflow-x:auto; min-height:480px;">
        <div class='subtitle color-white'>Queued Lava Packets</div>
        <table class='table table-dark zeroauto' v-cloak>
