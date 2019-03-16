@@ -30,14 +30,25 @@ import Vue from 'vue'
 const relayConfig = require('../../../relay.config').config
 
 var ethContainer;
+var packetRenderer;
 
 export default class EthHelper {
 
-   async init()
+
+    constructor( packRenderer )
+    {
+         packetRenderer = packRenderer;
+
+    }
+
+    
+   async init( packRenderer )
    {
      console.log('init eth helper')
 
      var self = this;
+
+
 
      ethContainer = new Vue({
       el: '#eth-container',
@@ -146,6 +157,8 @@ export default class EthHelper {
 
      this.web3 = web3;
 
+
+     await packetRenderer.update()
    }
 
    async renderError(message)

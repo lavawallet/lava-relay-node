@@ -4,7 +4,7 @@
       "mainnet": {
               "contracts": {
                 "_0xbitcointoken": {"name":"0xBitcoinToken", "blockchain_address":"0xb6ed7644c69416d67b522e20bc294a9a9b405b31"},
-                "lavatoken": {"name":"LavaToken", "blockchain_address":"0xd9c9c3d217079ba43e235e6f24521187b4b2e86b"},
+                "lavatoken": {"name":"LavaToken", "blockchain_address":"0xaaca36650c3790b9c53a9b88198c973b10a39892"},
                 "demutator": {"name":"DeMutator", "blockchain_address":"0x16118cfdbf415e06291e79b72e3b793647fe2dd6"}
               }
             },

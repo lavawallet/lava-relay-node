@@ -125,7 +125,7 @@
               <div class="column">
 
                 <div v-if="web3address">
-                Connected: <a v-bind:href='etherscanURL'>{{web3address}}</a>
+                  Connected: <a target='_blank' v-bind:href='etherscanURL'>{{web3address}}</a>
                 </div>
 
 
@@ -144,6 +144,9 @@
 
 
              <div id="action-container" class="action-container box" v-cloak v-if="shouldRender"    >
+
+               <div style="max-width:750px;margin:0 auto;">
+
                <div class="token-titlebar flex-bar">
                      <div class="token-title flex-start"> {{ selectedActionAsset.name }} </div>
 
@@ -337,6 +340,7 @@
 
                      </div>
 
+                     </div>
                    </div>
 
 
@@ -353,8 +357,7 @@
                              <tr >
                                <td class="has-text-centered"> Icon </td>
                                <td class="has-text-centered"> Name </td>
-                               <td class="has-text-centered"> Lava Balance </td>
-                               <td class="has-text-centered"> External Balance </td>
+                               <td class="has-text-centered"> Balance </td>
 
                              </tr>
                            </thead>
@@ -362,8 +365,7 @@
                            <tr    v-for="(item, index) in tokens.token_list" v-bind:data-tokenaddress="item.address" v-bind:class="{   'asset-row':true, 'acts-as-link':true, 'hover-shadow':true   } " >
                              <td class="row-cell has-text-centered icon-url"><img  v-bind:src="item.icon_url" height="42" width="42" ></img></td>
                              <td class="row-cell has-text-centered token-name">{{item.name}}</td>
-                             <td class="row-cell has-text-centered"><div class=" token-balance">{{item.lava_balance_formatted}}</div> </td>
-                             <td class="row-cell has-text-centered"><div class="has-text-centered token-balance">{{item.wallet_balance_formatted}}</div>  </td>
+                             <td class="row-cell has-text-centered"><div class=" token-balance">{{item.token_balance_formatted}}</div> </td>
 
                            </tr>
                          </tbody>

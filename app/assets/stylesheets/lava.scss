@@ -84,6 +84,11 @@
   {
     border-bottom: 1px solid black;
   }
+  tr:hover
+  {
+    background-color: rgba(255,255,255,0.1)
+  }
+
   td
   {
     padding: 15px 0px;

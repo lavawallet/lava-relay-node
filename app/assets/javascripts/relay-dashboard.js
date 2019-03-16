@@ -15,17 +15,20 @@ export default class RelayDashboard {
   {
     setInterval( function(){
          renderer.update();
+         packetRenderer.update()
     },5*1000);
 
 
     renderer.init();
 
-    ethHelper = new EthHelper();
+    packetRenderer = new LavaPacketRenderer();
+
+    ethHelper = new EthHelper( packetRenderer );
     ethHelper.init();
 
-    packetRenderer = new LavaPacketRenderer();
-    packetRenderer.init(ethHelper);
 
+    packetRenderer.init(ethHelper);
+    packetRenderer.update();
 
   }
 

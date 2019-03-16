@@ -17,6 +17,7 @@ const ContractInterface = require('../../../lib/contract-interface')
 
 import Vue from 'vue'
 var actionContainer;
+var assetList;
 
 export default class LavaPacketRenderer {
 
@@ -75,11 +76,11 @@ export default class LavaPacketRenderer {
        this.registerDropEvents()
 
 
-        var assetList = new Vue({
+          assetList = new Vue({
           el: '#asset-list',
           data: {
 
-            tokens: {token_list:defaultTokenData}
+             tokens: {token_list: defaultTokenData }
 
                },
 
@@ -96,6 +97,40 @@ export default class LavaPacketRenderer {
           self.registerAssetRowClickHandler()
 
         })
+
+  }
+
+
+  async update()
+  {
+      var account = this.ethHelper.getConnectedAccountAddress();
+
+      var defaultTokenData = TokenUtils.getAllTokensData();
+
+
+
+      for(var i=0;i<defaultTokenData.length;i++)
+      {
+        var tokenData = defaultTokenData[i]
+        var balance = await LavaWalletHelper.getTokenBalance(this.ethHelper, tokenData.symbol, account)
+
+
+
+        defaultTokenData[i].token_balance_formatted = balance;
+
+            console.log('new token data ',  defaultTokenData[i] )
+
+        await this.updateTokenDataList( defaultTokenData )
+      }
+
+
+  }
+
+
+  async updateTokenDataList( allTokenData )
+  {
+
+    await Vue.set(assetList, "tokens" ,  {token_list: allTokenData }  );
 
   }
 
@@ -227,18 +262,18 @@ export default class LavaPacketRenderer {
           });
 
 
-          $('.btn-action-withdraw').off();
-          $('.btn-action-withdraw').on('click',  function(){
+          $('.btn-action-unmutate').off();
+          $('.btn-action-unmutate').on('click',  function(){
 
             var selectedActionAsset = actionContainer.selectedActionAsset ;
 
             var tokenAddress = selectedActionAsset.address;
-            var withdrawAmount = actionContainer.withdrawTokenQuantity;
+            var amount = actionContainer.umutateTokenQuantity;
             var tokenDecimals = selectedActionAsset.decimals;
 
 
-                console.log('withdraw ', tokenAddress,  withdrawAmount)
-                self.withdrawToken(tokenAddress, withdrawAmount, tokenDecimals, function(error,response){
+            console.log('unmutate ', tokenAddress,  amount)
+            LavaWalletHelper.executeTokenAction(self.ethHelper,tokenAddress, 'unmutate', amount,function(error,response){
                console.log(response)
             });
 

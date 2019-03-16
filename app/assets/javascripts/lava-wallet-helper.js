@@ -25,7 +25,7 @@ var _0xBitcoinContract;
 export default class LavaWalletHelper {
 
 
-    async collectClientTokenBalances(tokenList,userAddress)
+  /*  async collectClientTokenBalances(tokenList,userAddress)
     {
       for(var i in tokenList)
       {
@@ -54,35 +54,22 @@ export default class LavaWalletHelper {
       }
 
 
-    }
+    }*/
 
-    async getLavaTokenBalance(tokenAddress,tokenOwner)
+
+    static async getTokenBalance(ethHelper, tokenSymbol ,tokenOwner)
     {
-      var contract = this.ethHelper.getWeb3ContractInstance(
-        this.web3,
-        this.lavaWalletContract.blockchain_address,
-        lavaContractABI.abi
-      );
 
-          console.log('get lava token balance')
+      console.log('maap', tokenSymbol )
 
-      console.log(contract)
+      var tokenData = TokenUtils.getTokenDataBySymbol(tokenSymbol);
 
+      var contract = ethHelper.getTokenContractInstance(tokenData );
 
-        console.log(tokenAddress,tokenOwner)
-
-      var lavaBalance = await new Promise(resolve => {
-        contract.balanceOf(tokenAddress,tokenOwner, function(error,response){
-           resolve(response.toNumber());
-           })
-      });
-
-      return lavaBalance;
-    }
-
-    async getTokenBalance(tokenAddress,tokenOwner)
-    {
-      var contract = this.ethHelper.getWeb3ContractInstance(this.web3,tokenAddress,erc20TokenABI.abi );
+      if(typeof contract == "undefined")
+      {
+        return '?'
+      }
 
       var balance = await new Promise(resolve => {
         contract.balanceOf(tokenOwner, function(error,response){
@@ -127,7 +114,7 @@ export default class LavaWalletHelper {
     }
 
     //not used
-      async updateWalletRender()
+  /*    async updateWalletRender()
       {
         if(this.web3 == null)
         {
@@ -166,7 +153,7 @@ export default class LavaWalletHelper {
 
           balanceText = tokenBalance / Math.pow(10,decimals);
 
-      }
+      }*/
 
 
 
@@ -358,8 +345,6 @@ export default class LavaWalletHelper {
   static async executeTokenAction(ethHelper,tokenAddress, actionName, amountFormatted, callback)
   {
 
-      ///  var tokenData =
-
 
 
       var tokenData = TokenUtils.getTokenDataByAddress( tokenAddress );
@@ -377,7 +362,10 @@ export default class LavaWalletHelper {
 
       if(tokenData.lavaReady)
       {
-
+        if(actionName == 'unmutate')
+        {
+           LavaWalletHelper.UnMutateToken(ethHelper,tokenSymbol,amountRaw,callback)
+        }
       }
 
       if(tokenData.supportsDelegateCallMutation == true)
@@ -426,19 +414,26 @@ export default class LavaWalletHelper {
 
      var remoteCallData = '0'
 
-    //var from = this.web3.eth.accounts[0];
-     var from = ethHelper.getConnectedAccountAddress()
-
-
-
-     console.log('cccc', mutatesToTokenAddress, amountRaw, remoteCallData)
-
-    // var getData = contract.approveAndCall.getData(  mutatesToTokenAddress, amountRaw , remoteCallData );
-
-//     contract.approveAndCall.sendTransaction(  {from: from, data:getData }, callback);
+      var from = ethHelper.getConnectedAccountAddress()
 
 
      contract.approveAndCall.sendTransaction( mutatesToTokenAddress, amountRaw, remoteCallData , callback);
+
+  }
+
+  static async UnMutateToken(ethHelper,tokenSymbol,amountRaw,callback)
+  {
+     console.log('unmutate token',tokenSymbol,amountRaw);
+
+     var tokenData = TokenUtils.getTokenDataBySymbol( tokenSymbol );
+
+     var contract =  ethHelper.getTokenContractInstance(tokenData);
+
+     var tokenAddress = TokenUtils.getTokenAddressForEnv(tokenData)
+
+      var from = ethHelper.getConnectedAccountAddress()
+
+     contract.unmutateTokens.sendTransaction(  amountRaw, callback);
 
   }
 
