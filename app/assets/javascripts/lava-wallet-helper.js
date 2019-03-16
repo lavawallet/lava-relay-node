@@ -456,7 +456,7 @@ export default class LavaWalletHelper {
     //const data = JSON.stringify( dataToSign  );
 
 
-    const domain = [
+    /*const domain = [
         { name: "name", type: "string" },
         { name: "version", type: "string" },
         { name: "chainId", type: "uint256" },
@@ -498,7 +498,7 @@ export default class LavaWalletHelper {
         primaryType: "Bid",
         message: message
     });
-
+    */
 
     const data2 = JSON.stringify( dataToSign  );
      //var params = [msgParams, from]
