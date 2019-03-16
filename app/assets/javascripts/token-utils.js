@@ -77,12 +77,12 @@ export default class TokenUtils {
 
   static getRawFromDecimalFormat(amountFormatted,decimals)
   {
-    if(isNaN(amountRaw)) return amountRaw;
-    
+    if(isNaN(amountFormatted)) {return amountFormatted;}
+
     var amountRaw = amountFormatted * Math.pow(10,decimals)
 
     amountRaw = Math.floor(amountRaw)
-
+     
     return amountRaw;
   }
 

@@ -341,9 +341,11 @@ export default class LavaWalletHelper {
 
       console.log('ethHelper', ethHelper)
 
-        console.log('execute token action', actionName, tokenData)
 
       var tokenDecimals = tokenData.decimals;
+      console.log('execute token action', actionName, tokenData, amountFormatted, tokenDecimals)
+
+
       var amountRaw = TokenUtils.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
       var tokenSymbol = tokenData.symbol;
 
@@ -388,6 +390,7 @@ export default class LavaWalletHelper {
 
       var from = ethHelper.getConnectedAccountAddress()
 
+      console.log('!!!!!' , mutatesToTokenAddress, amountRaw, remoteCallData )
 
      contract.approveAndCall.sendTransaction( mutatesToTokenAddress, amountRaw, remoteCallData , callback);
 
