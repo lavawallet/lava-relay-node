@@ -77,6 +77,8 @@ export default class TokenUtils {
 
   static getRawFromDecimalFormat(amountFormatted,decimals)
   {
+    if(isNaN(amountRaw)) return amountRaw;
+    
     var amountRaw = amountFormatted * Math.pow(10,decimals)
 
     amountRaw = Math.floor(amountRaw)
@@ -86,6 +88,9 @@ export default class TokenUtils {
 
   static formatAmountWithDecimals(amountRaw,decimals)
   {
+
+    if(isNaN(amountRaw)) return amountRaw;
+
     var amountFormatted = amountRaw / (Math.pow(10,decimals) * 1.0)
 
   //  amountFormatted = Math.round(amountFormatted,decimals)

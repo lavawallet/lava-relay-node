@@ -116,7 +116,9 @@ export default class LavaPacketRenderer {
 
 
 
-        defaultTokenData[i].token_balance_formatted = balance;
+
+          defaultTokenData[i].token_balance = balance;
+          defaultTokenData[i].token_balance_formatted = TokenUtils.formatAmountWithDecimals(balance,tokenData.decimals);
 
             console.log('new token data ',  defaultTokenData[i] )
 
@@ -311,7 +313,7 @@ export default class LavaPacketRenderer {
 
 
                   console.log('lava transfer gen ', tokenAddress,  transferAmount, transferRecipient)
-                  self.generateLavaTransaction(method,tokenAddress, transferAmount, transferRecipient, transferRelayReward, tokenDecimals, function(error,response){
+                  LavaWalletHelper.generateLavaTransaction(self.ethHelper, method,tokenAddress, transferAmount, transferRecipient, transferRelayReward, tokenDecimals, function(error,response){
                  console.log(response)
             });
 

@@ -15,6 +15,8 @@ const relayConfig = require('../../../relay.config').config
 
 import TokenUtils from './token-utils'
 
+var LavaPacketUtils = require('../../../lib/lava-packet-utils')
+
 var defaultTokenData;
 
 var deployedContractInfo = require('../../../DeployedContractInfo.json')
@@ -197,19 +199,7 @@ export default class LavaWalletHelper {
 
 
 
-  async getCurrentEthBlockNumber()
-  {
-   return await new Promise(function (fulfilled,error) {
-          web3.eth.getBlockNumber(function(err, result)
-        {
-          if(err){error(err);return}
-          console.log('eth block number ', result )
-          fulfilled(result);
-          return;
-        });
-     });
 
-  }
 
 
 
@@ -380,24 +370,6 @@ export default class LavaWalletHelper {
   }
 
 
-  static async approveToken(tokenAddress,amountFormatted,tokenDecimals,callback)
-  {
-     console.log('approve token',tokenAddress,amountRaw);
-
-     var amountRaw = LavaWalletHelper.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
-
-
-     var contract =  ethHelper.getWeb3ContractInstance(
-       this.web3,
-       tokenAddress ,
-       erc20TokenABI.abi
-     );
-
-     var spender = this.lavaWalletContract.blockchain_address;
-
-     contract.approve.sendTransaction( spender, amountRaw , callback);
-
-  }
 
   static async delegateCallMutateToken(ethHelper,tokenSymbol,amountRaw,callback)
   {
@@ -438,45 +410,28 @@ export default class LavaWalletHelper {
   }
 
 
-  async withdrawToken(tokenAddress,amountFormatted,tokenDecimals,callback)
-  {
-     console.log('withdraw token',tokenAddress,amountRaw);
-
-     var amountRaw = this.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
 
 
-     var contract = this.ethHelper.getWeb3ContractInstance(
-       this.web3,
-       this.lavaWalletContract.blockchain_address,
-       lavaContractABI.abi
-     );
-
-     console.log(contract)
-
-     contract.withdrawTokens.sendTransaction( tokenAddress, amountRaw , callback);
-
-  }
-
-
-  async generateLavaTransaction(method, tokenAddress, amountFormatted, transferRecipient, relayerRewardFormatted, tokenDecimals)
+  static async generateLavaTransaction(ethHelper, method, tokenAddress, amountFormatted, transferRecipient, relayerRewardFormatted, tokenDecimals)
   {
 
     var self = this;
 
 
-      var amountRaw = this.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
-      var relayerRewardRaw = this.getRawFromDecimalFormat(relayerRewardFormatted,tokenDecimals)
+      var amountRaw = TokenUtils.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
+      var relayerRewardRaw = TokenUtils.getRawFromDecimalFormat(relayerRewardFormatted,tokenDecimals)
 
 
     //bytes32 sigHash = sha3("\x19Ethereum Signed Message:\n32",this, from, to, token, tokens, relayerReward, expires, nonce);
    //  address recoveredSignatureSigner = ECRecovery.recover(sigHash,signature);
-   var ethBlock = await this.getCurrentEthBlockNumber();
+   var ethBlock = await ethHelper.getCurrentEthBlockNumber();
 
   // var method = 'transfer'; //need a dropdown
 
 
-   var walletAddress = this.lavaWalletContract.blockchain_address;
-   var from = this.web3.eth.accounts[0];
+   var walletAddress =  tokenAddress ;
+   var relayAuthority = 0; //for now...
+   var from = ethHelper.getConnectedAccountAddress()
    var to = transferRecipient;
    var tokenAddress = tokenAddress;
    var tokenAmount = amountRaw;
@@ -486,26 +441,70 @@ export default class LavaWalletHelper {
 
    //need to append everything together !! to be ..like in solidity.. :  len(message) + message
 
-   const msgParams = LavaPacketUtils.getLavaParamsFromData(method,from,to,walletAddress,tokenAddress,tokenAmount,relayerReward,expires,nonce)
+   const dataToSign = LavaPacketUtils.getLavaTypedDataFromParams(method,relayAuthority,from,to,walletAddress,tokenAmount,relayerReward,expires,nonce)
 
-
-   console.log('generateLavaTransaction',tokenAddress,amountRaw,transferRecipient)
-
+   //console.log('generateLavaTransaction',tokenAddress,amountRaw,transferRecipient)
 
     //testing
-    var sigHash = sigUtil.typedSignatureHash(msgParams);
+  //  var sigHash = sigUtil.typedSignatureHash(msgParams);
 
-    console.log('lava sigHash',msgParams,sigHash)
+    console.log('lava dataToSign', dataToSign, from  )
 
-
-
-    var params = [msgParams, from]
-
-    var signature = await this.signTypedData(params,from);
+    //const data = JSON.stringify( dataToSign  );
 
 
+    const domain = [
+        { name: "name", type: "string" },
+        { name: "version", type: "string" },
+        { name: "chainId", type: "uint256" },
+        { name: "verifyingContract", type: "address" },
+        { name: "salt", type: "bytes32" },
+    ];
+    const bid = [
+        { name: "amount", type: "uint256" },
+        { name: "bidder", type: "Identity" },
+    ];
+    const identity = [
+        { name: "userId", type: "uint256" },
+        { name: "wallet", type: "address" },
+    ];
 
-    console.log('lava signature',msgParams,signature)
+    const domainData = {
+        name: "My amazing dApp",
+        version: "2",
+        chainId: parseInt(web3.version.network, 10),
+        verifyingContract: "0x1C56346CD2A2Bf3202F771f50d3D14a367B48070",
+        salt: "0xf2d857f4a3edcb9b78b4d503bfe733db1e3f6cdc2b7971ee739626c97e86a558"
+    };
+    var message = {
+        amount: 100,
+        bidder: {
+            userId: 323,
+            wallet: "0x3333333333333333333333333333333333333333"
+        }
+    };
+
+
+    const data = JSON.stringify({
+        types: {
+            EIP712Domain: domain,
+            Bid: bid,
+            Identity: identity,
+        },
+        domain: domainData,
+        primaryType: "Bid",
+        message: message
+    });
+
+
+    const data2 = JSON.stringify( dataToSign  );
+     //var params = [msgParams, from]
+
+    var signature = await ethHelper.signMsg(from, data2 );
+
+
+
+  //  console.log('lava signature',msgParams,signature)
 
     var packetJson = LavaPacketUtils.getLavaPacket(
       method,from,to,walletAddress,tokenAddress,tokenAmount,

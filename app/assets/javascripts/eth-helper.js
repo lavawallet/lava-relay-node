@@ -41,7 +41,7 @@ export default class EthHelper {
 
     }
 
-    
+
    async init( packRenderer )
    {
      console.log('init eth helper')
@@ -144,7 +144,28 @@ export default class EthHelper {
      return this.getWeb3Instance().eth.accounts[0];
    }
 
+   async getCurrentEthBlockNumber()
+   {
 
+     if(typeof this.getWeb3Instance() == 'undefined')
+     {
+       this.renderError( 'Please connect to web3 first.' )
+       return;
+     }
+
+     var web3 = this.getWeb3Instance();
+
+    return await new Promise(function (fulfilled,error) {
+           web3.eth.getBlockNumber(function(err, result)
+         {
+           if(err){error(err);return}
+           console.log('eth block number ', result )
+           fulfilled(result);
+           return;
+         });
+      });
+
+   }
 
    async updateEthAccountInfo(web3)
    {
@@ -243,6 +264,33 @@ export default class EthHelper {
 
     return instance
   }
+
+
+
+  //personal sign typed data
+   signMsg(from,data) {
+    web3.currentProvider.sendAsync({
+      method: 'eth_signTypedData_v3',
+      params: [from, data],  //switched in new release 
+      from: from,
+    }, function (err, result) {
+      if (err) return console.error(err)
+      if (result.error) {
+        return console.error(result.error.message)
+      }
+      const recovered = sigUtil.recoverTypedSignature({
+        data: msgParams,
+        sig: result.result
+      })
+      if (recovered === from ) {
+        alert('Recovered signer: ' + from)
+      } else {
+        alert('Failed to verify signer, got: ' + result)
+      }
+    })
+  }
+
+
 
 
   getContractAddress()
