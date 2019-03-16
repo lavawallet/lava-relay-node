@@ -29,6 +29,10 @@ var relayconfig = {
 
     }
   ],
+  remoteCallContractWhitelist:[
+    '0x16118cfdbf415e06291e79b72e3b793647fe2dd6',
+    '0x27fc9a5b7f3c8bb041a7b6e54afddea059159127'
+  ],
   websocketsPort: 2086, //used for Vue frontend
   priceOracleURL: null, //uses mercatox by default
   minGasPriceWei: 10,
