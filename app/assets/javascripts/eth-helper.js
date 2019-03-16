@@ -268,26 +268,35 @@ export default class EthHelper {
 
 
   //personal sign typed data
-   signMsg(from,data) {
-    web3.currentProvider.sendAsync({
-      method: 'eth_signTypedData_v3',
-      params: [from, data],  //switched in new release 
-      from: from,
-    }, function (err, result) {
-      if (err) return console.error(err)
-      if (result.error) {
-        return console.error(result.error.message)
-      }
-      const recovered = sigUtil.recoverTypedSignature({
-        data: msgParams,
-        sig: result.result
-      })
-      if (recovered === from ) {
-        alert('Recovered signer: ' + from)
-      } else {
-        alert('Failed to verify signer, got: ' + result)
-      }
-    })
+   async signMsg(from,data) {
+
+     var result = await new Promise(async resolve => {
+
+          web3.currentProvider.sendAsync({
+            method: 'eth_signTypedData_v3',
+            params: [from, data],  //switched in new release
+            from: from,
+          },
+              function(err, result) {
+              if (err) {
+                  return console.error(err);
+              }
+              const signature = result.result.substring(2);
+              const r = "0x" + signature.substring(0, 64);
+              const s = "0x" + signature.substring(64, 128);
+              const v = parseInt(signature.substring(128, 130), 16);
+              // The signature is now comprised of r, s, and v.
+
+              console.log('packet: ',data)
+              console.log('got sig! ', ('0x'+signature))
+
+                resolve( ('0x'+signature) );
+              }
+          );
+
+   });
+   return result;
+
   }
 
 

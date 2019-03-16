@@ -25,3 +25,22 @@
 
 1. Render oracles them on web server
 2. Allow for lava packets to be POSTed in, store them in redis, and render them on web server
+
+
+## Cloudflare
+The HTTP ports that Cloudflare support are:
+80  --use for packets
+8080  
+8880
+2052
+2082  --use for p2p
+2086  --use for websockets ?
+2095  
+
+The HTTPs ports that Cloudflare support are:
+443
+2053
+2083
+2087
+2096
+8443

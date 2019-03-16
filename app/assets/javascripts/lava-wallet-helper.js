@@ -418,7 +418,7 @@ export default class LavaWalletHelper {
   static async generateLavaTransaction(ethHelper, method, tokenAddress, amountFormatted, transferRecipient, relayerRewardFormatted, tokenDecimals)
   {
 
-    var self = this;
+     var self = this;
 
 
       var amountRaw = TokenUtils.getRawFromDecimalFormat(amountFormatted,tokenDecimals)
@@ -517,13 +517,7 @@ export default class LavaWalletHelper {
 
       console.log('lava packet json ',  lavaPacketString );
 
-      await  Vue.set(actionContainer, "lavaPacketExists" , true);
-      await Vue.set(actionContainer, "lavaPacketData" , lavaPacketString);
-
-      Vue.nextTick(function () {
-        self.registerLavaPacketDownloadButton(lavaPacketString)
-        self.registerLavaPacketBroadcastButton(lavaPacketString)
-      })
+      return lavaPacketString;
   }
 
   async registerLavaPacketDownloadButton(lavaPacketString)

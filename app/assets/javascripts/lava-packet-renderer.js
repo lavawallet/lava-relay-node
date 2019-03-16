@@ -13,6 +13,8 @@ import LavaWalletHelper from './lava-wallet-helper'
 
 import TokenUtils from './token-utils'
 
+import LavaPacketHelper from './lava-packet-helper'
+
 const ContractInterface = require('../../../lib/contract-interface')
 
 import Vue from 'vue'
@@ -39,7 +41,7 @@ export default class LavaPacketRenderer {
         {
           var defaultAction = 'transfer';
 
-          let DEFAULT_RELAY_NODE_URL = relayConfig.seedNodes[0].address;
+          let DEFAULT_RELAY_NODE_URL = relayConfig.defaultRelayUrl;
 
             actionContainer = new Vue({
              el: '#action-container',
@@ -270,7 +272,7 @@ export default class LavaPacketRenderer {
             var selectedActionAsset = actionContainer.selectedActionAsset ;
 
             var tokenAddress = selectedActionAsset.address;
-            var amount = actionContainer.umutateTokenQuantity;
+            var amount = actionContainer.unmutateTokenQuantity;
             var tokenDecimals = selectedActionAsset.decimals;
 
 
@@ -299,7 +301,7 @@ export default class LavaPacketRenderer {
           });
 
           $('.btn-action-lava-transfer').off();
-          $('.btn-action-lava-transfer').on('click',  function(){
+          $('.btn-action-lava-transfer').on('click', async function(){
 
             var selectedActionAsset = actionContainer.selectedActionAsset ;
 
@@ -312,10 +314,22 @@ export default class LavaPacketRenderer {
             var method = actionContainer.transferTokenMethod; //could also be withdraw or approve
 
 
-                  console.log('lava transfer gen ', tokenAddress,  transferAmount, transferRecipient)
-                  LavaWalletHelper.generateLavaTransaction(self.ethHelper, method,tokenAddress, transferAmount, transferRecipient, transferRelayReward, tokenDecimals, function(error,response){
-                 console.log(response)
-            });
+           console.log('lava transfer gen ', tokenAddress,  transferAmount, transferRecipient)
+
+
+            var lavaPacketString = await  LavaWalletHelper.generateLavaTransaction(self.ethHelper, method,tokenAddress, transferAmount, transferRecipient, transferRelayReward, tokenDecimals);
+
+
+             console.log('GOT GENERATION', lavaPacketString)
+
+             await Vue.set(actionContainer, "lavaPacketExists" , true);
+             await Vue.set(actionContainer, "lavaPacketData" , lavaPacketString);
+
+             Vue.nextTick(function () {
+               self.registerLavaPacketDownloadButton(lavaPacketString)
+               self.registerLavaPacketBroadcastButton(lavaPacketString)
+             })
+
 
           });
 
@@ -325,6 +339,61 @@ export default class LavaPacketRenderer {
         async resetLavaPacket()
         {
           await  Vue.set(actionContainer, "lavaPacketExists" , false);
+        }
+
+
+        async registerLavaPacketDownloadButton(lavaPacketString)
+        {
+
+            var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(lavaPacketString));
+            $('#btn-download-lava-packet').empty();
+            $('<a href="data:' + data + '" download="packet.lava" class="button is-primary btn-download-lava-packet">Download Lava Packet</a>').appendTo('#btn-download-lava-packet');
+
+
+        }
+
+        async registerLavaPacketBroadcastButton(lavaPacketString)
+        {
+          var self = this;
+
+          $('.btn-broadcast-lava-packet').on('click',function(){
+              self.broadcastLavaPacket(lavaPacketString)
+          })
+
+
+        }
+
+        async broadcastLavaPacket(lavaPacketString)
+        {
+          console.log('broadcast ',lavaPacketString, actionContainer.relayNodeURL)
+
+          var lavaPacketData = JSON.parse(lavaPacketString)
+
+          console.log(lavaPacketData)
+
+          var response = await LavaPacketHelper.sendLavaPacket(actionContainer.relayNodeURL, lavaPacketData)
+
+          if(response.success)
+          {
+            await  Vue.set(actionContainer, "broadcastMessage" , "Success!");
+          }else{
+            await  Vue.set(actionContainer, "broadcastMessage" , response.message);
+          }
+
+          /*for(var i in lavaSeedNodes.seedNodes)
+          {
+            var seed = lavaSeedNodes.seedNodes[i];
+
+
+            $.ajax({
+                url: seed.address,
+                type: 'POST',
+                data: {lavaPacketString:lavaPacketString}
+              });
+
+          }*/
+
+
         }
 
 
