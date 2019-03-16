@@ -418,28 +418,27 @@ export default class LavaWalletHelper {
      var tokenData = TokenUtils.getTokenDataBySymbol( tokenSymbol );
      var mutatesToToken = TokenUtils.getTokenDataBySymbol(tokenData.mutates_to)
 
+     var mutatesToTokenAddress = TokenUtils.getTokenAddressForEnv(mutatesToToken)
+
      var contract =  ethHelper.getTokenContractInstance(tokenData);
 
-     var tokenAddress = tokenData.address
-      console.log('cccc',contract)
-     /*
-     var contract =  ethHelper.getWeb3ContractInstance(
-       this.web3,
-       this.lavaWalletContract.blockchain_address,
-       lavaContractABI.abi
-     );
+     var tokenAddress = TokenUtils.getTokenAddressForEnv(tokenData)
 
-     console.log(contract)
-
-     var from = this.web3.eth.accounts[0];
-
-     contract.depositTokens.sendTransaction( from, tokenAddress, amountRaw ,   callback);
-    */
+     var remoteCallData = '0'
 
     //var from = this.web3.eth.accounts[0];
-    var from = ethHelper.getConnectedAccountAddress()
-    contract.approveAndCall.sendTransaction( from, tokenAddress, amountRaw ,   callback);
+     var from = ethHelper.getConnectedAccountAddress()
 
+
+
+     console.log('cccc', mutatesToTokenAddress, amountRaw, remoteCallData)
+
+    // var getData = contract.approveAndCall.getData(  mutatesToTokenAddress, amountRaw , remoteCallData );
+
+//     contract.approveAndCall.sendTransaction(  {from: from, data:getData }, callback);
+
+
+     contract.approveAndCall.sendTransaction( mutatesToTokenAddress, amountRaw, remoteCallData , callback);
 
   }
 

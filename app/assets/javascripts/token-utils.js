@@ -38,6 +38,16 @@ export default class TokenUtils {
 
   }
 
+  static getTokenAddressForEnv(tokenData)
+  {
+    if(relayConfig.env == 'development')
+    {
+      return tokenData.test_address;
+    }
+
+    return tokenData.address;
+  }
+
   static getTokenDataBySymbol( symbol )
   {
 
