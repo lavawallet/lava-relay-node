@@ -107,6 +107,7 @@ var lavaContractAddress = deployedContractInfo.networks.testnet.contracts.lavato
 
              console.log('!!!!!!!!!!!sig is ', computedSig)
 
+             //why does this fail 
              var response =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
 
             assert.equal( response, true  );
@@ -209,7 +210,7 @@ var lavaContractAddress = deployedContractInfo.networks.testnet.contracts.lavato
 
 
 
-        
+
         var typedData = LavaPacketUtils.getLavaTypedDataFromParams(
            packetData.methodName,
            packetData.relayAuthority,
