@@ -1,0 +1,144 @@
+
+
+
+
+.action-container
+{
+
+  .token-titlebar
+  {
+    padding: 10px 10px;
+  }
+
+  .token-title
+  {
+    font-size: 2em;
+
+  }
+
+  .token-icon
+   {
+
+   }
+
+}
+
+.one-half
+{
+  width:50%;
+}
+
+
+.one-third
+{
+  width:33%;
+}
+
+
+
+.asset-list
+{
+  color:white;
+
+  table
+  {
+    width:100%;
+  }
+
+  thead
+  {
+      font-size: 1em;
+    border-bottom: 1px solid black;
+  }
+  tbody
+  {
+    font-size: 1.5em;
+  }
+  tr
+  {
+    border-bottom: 1px solid black;
+  }
+  td
+  {
+    padding: 15px 0px;
+  }
+}
+
+.lava-packet-dropzone
+{
+
+
+  background: repeating-linear-gradient(45deg, #ffebcb, #ffebcb,10px, #ffffff 10px, #ffffff 20px);
+  padding: 25px;
+  border-radius: 10px;
+
+  .subtitle
+  {
+    text-align: center;
+    color:black;
+
+  }
+  .dropzone
+  {
+    min-height:250px;
+
+    .hand-icon-holder
+    {
+      font-size:2em;
+      margin:0 auto;
+    }
+
+    .dropzone-file-input-container
+    {
+      text-align: center;
+      padding:20px;
+      margin:0 auto;
+    }
+  }
+
+}
+
+
+
+
+.order-row
+{
+
+  width:280px;
+  margin-top:5px;
+  margin-bottom:5px;
+  background-color:white;
+
+
+    border: 1px solid gray;
+
+  padding:5px;
+
+  .order-row-cell
+  {
+   padding:5px;
+   color:black;
+  }
+
+}
+
+.order-row:hover
+{
+  background-color:#ddd;
+}
+
+.order-row.unable
+{
+  background-color:#edd;
+}
+
+.transfer-form-fields
+{
+  max-width:180px;
+  margin: 20px auto;
+
+  .button
+  {
+    margin: 10px;
+  }
+}

@@ -140,6 +140,9 @@ export default class LavaPacketRenderer {
 
         await Vue.set(actionContainer, "shouldRender" , true);
 
+
+        var self = this;
+
         Vue.nextTick(function () {
            self.registerActionContainerClickHandler();
         })
@@ -161,6 +164,23 @@ export default class LavaPacketRenderer {
           })
 
         }
+
+        async registerActionContainerClickHandler()
+        {
+          var self = this;
+
+
+          $('.tab-action').off();
+          $('.tab-action').on('click',  function(){
+
+            var actionType = $(this).data('action-type');
+
+            self.selectActiveAction(actionType);
+
+          });
+
+        }
+
 
         async resetLavaPacket()
         {
