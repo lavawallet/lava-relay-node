@@ -138,6 +138,18 @@ export default class LavaPacketRenderer {
 
   }
 
+  async updatePacketFeeStats( data )
+  {
+      console.log('update packet fee data ',data )
+
+        if( isNaN( actionContainer.transferTokenRelayReward) || actionContainer.transferTokenRelayReward <= 0 )
+        {
+          Vue.set(actionContainer,'transferTokenRelayReward',data.targetFastRewardTokens  );
+        }
+
+
+  }
+
   async registerAssetRowClickHandler()
   {
     var self = this;

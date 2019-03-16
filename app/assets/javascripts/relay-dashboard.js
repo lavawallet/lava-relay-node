@@ -19,9 +19,11 @@ export default class RelayDashboard {
     },5*1000);
 
 
-    renderer.init();
+
 
     packetRenderer = new LavaPacketRenderer();
+
+    renderer.init( packetRenderer );
 
     ethHelper = new EthHelper( packetRenderer );
     ethHelper.init();

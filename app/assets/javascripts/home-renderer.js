@@ -66,6 +66,7 @@ export default class HomeRenderer {
 
           Vue.set(stats, 'relayData',  data )
 
+        
       });
 
       this.socket.on('lavaPackets', function (data) {

@@ -21,7 +21,7 @@ var queuedtxlist;
 
 export default class RelayRenderer {
 
-    init( )
+    init( packetRenderer )
     {
 
       var self = this;
@@ -59,6 +59,10 @@ export default class RelayRenderer {
           console.log('relay data ', data )
 
           Vue.set(stats, 'relayData',  data )
+
+
+          packetRenderer.updatePacketFeeStats( data )
+
 
       });
 
