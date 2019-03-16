@@ -431,9 +431,10 @@ export default class LavaWalletHelper {
 
   // var method = 'transfer'; //need a dropdown
 
+   const BURN_ADDRESS = '0x0000000000000000000000000000000000000000';
 
    var walletAddress =  tokenAddress ;
-   var relayAuthority = 0; //for now...
+   var relayAuthority = BURN_ADDRESS; //for now...
    var from = ethHelper.getConnectedAccountAddress()
    var to = transferRecipient;
    var tokenAddress = tokenAddress;
