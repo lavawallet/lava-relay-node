@@ -8,6 +8,15 @@ var web3utils = require('web3-utils')
 var sigUtil = require('eth-sig-util')
 
 
+
+var lavaContract = require('../../../contracts/LavaToken.json')
+var _0xBitcoinContract = require('../../../contracts/_0xBitcoinToken.json')
+var erc20TokenContract = require('../../../contracts/ERC20Interface.json')
+var demutatorContract = require('../../../contracts/DeMutator.json')
+
+
+
+
 import LavaWalletHelper from './lava-wallet-helper'
 
 import TokenUtils from './token-utils'
@@ -107,14 +116,35 @@ export default class EthHelper {
 
    }
 
+   getWeb3Instance()
+   {
+     return this.web3;
+   }
+
+   getConnectedAccountAddress()
+   {
+
+     if(typeof this.getWeb3Instance() == 'undefined')
+     {
+       this.renderError( 'No Connected Account. Please connect to web3 first.' )
+       return;
+     }
+
+     return this.getWeb3Instance().eth.accounts[0];
+   }
+
+
+
    async updateEthAccountInfo(web3)
    {
      console.log('eth account info',web3)
 
+     this.clearError();
+
      await Vue.set(ethContainer, "web3address" , web3.eth.accounts[0]);
      await Vue.set(ethContainer, "etherscanURL" , 'https://etherscan.io/address/'+web3.eth.accounts[0]);
 
-
+     this.web3 = web3;
 
    }
 
@@ -123,27 +153,82 @@ export default class EthHelper {
      await Vue.set(ethContainer, "errorMessage" , message);
    }
 
+   async clearError()
+   {
+     await Vue.set(ethContainer, "errorMessage" , null);
+   }
 
-  async getTokenContractInstance(tokenData)
+
+    getTokenContractInstance(tokenData)
   {
     console.log('get contract instance ', tokenData.symbol)
+
+    this.clearError();
+
+    if(typeof this.getWeb3Instance() == 'undefined')
+    {
+      this.renderError( 'Please connect to web3 first.' )
+      return;
+    }
+
+    var tokenAddress = tokenData.address;
+    var tokenType = tokenData.tokenType;
+
+    var tokenContractABI = this.getContractABIFromType( tokenType )
+
+    var instance = this.getWeb3ContractInstance( tokenAddress, tokenContractABI  )
+
+    return instance;
+    /*
+    var contract =  ethHelper.getWeb3ContractInstance(
+      this.web3,
+      this.lavaWalletContract.blockchain_address,
+      lavaContractABI.abi
+    ); */
+
+
   }
 
-  getWeb3ContractInstance(web3, contract_address, contract_abi )
+  getContractABIFromType(tokenType)
   {
+    switch(tokenType) {
+        case 'masterToken':
+            return _0xBitcoinContract.abi;
+          break;
+        case 'lavaToken':
+            return  lavaContract.abi;
+          break;
+        default:
+          return;
+          // code block
+      }
+  }
+
+
+  getWeb3ContractInstance(  contract_address, contract_abi )
+  {
+
+    console.log('get contract instance ', contract_address , contract_abi)
+
+    var web3 = this.getWeb3Instance();
+
     if(contract_address == null)
     {
-      contract_address = this.getContractAddress();
+        renderError('Internal Error: Missing contract address')
+       return;
     }
 
     if(contract_abi == null)
     {
-      contract_abi = this.getContractABI();
+      renderError('Internal Error: Missing contract ABI')
+     return;
     }
 
-      return web3.eth.contract(contract_abi).at(contract_address)
+    var instance =  web3.eth.contract(contract_abi).at(contract_address)
 
+    console.log('wwww',instance)
 
+    return instance
   }
 
 

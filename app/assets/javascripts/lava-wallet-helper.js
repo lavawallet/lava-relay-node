@@ -360,6 +360,8 @@ export default class LavaWalletHelper {
 
       ///  var tokenData =
 
+
+
       var tokenData = TokenUtils.getTokenDataByAddress( tokenAddress );
 
       console.log('ethHelper', ethHelper)
@@ -417,7 +419,9 @@ export default class LavaWalletHelper {
      var mutatesToToken = TokenUtils.getTokenDataBySymbol(tokenData.mutates_to)
 
      var contract =  ethHelper.getTokenContractInstance(tokenData);
-      console.log(contract)
+
+     var tokenAddress = tokenData.address
+      console.log('cccc',contract)
      /*
      var contract =  ethHelper.getWeb3ContractInstance(
        this.web3,
@@ -432,7 +436,8 @@ export default class LavaWalletHelper {
      contract.depositTokens.sendTransaction( from, tokenAddress, amountRaw ,   callback);
     */
 
-    var from = this.web3.eth.accounts[0];
+    //var from = this.web3.eth.accounts[0];
+    var from = ethHelper.getConnectedAccountAddress()
     contract.approveAndCall.sendTransaction( from, tokenAddress, amountRaw ,   callback);
 
 

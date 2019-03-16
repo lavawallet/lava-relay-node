@@ -127,10 +127,12 @@
                 <div v-if="web3address">
                 Connected: <a v-bind:href='etherscanURL'>{{web3address}}</a>
                 </div>
+
+
               </div>
        </div>
 
-       <div class="columns alert-container" v-if="errorMessage" >
+       <div class="columns alert-container notification is-danger" v-if="errorMessage" >
 
             {{ errorMessage }}
 
