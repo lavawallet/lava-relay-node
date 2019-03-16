@@ -23,6 +23,11 @@
 
 }
 
+.hide-overflow
+{
+  overflow-x: hidden;
+}
+
 .one-half
 {
   width:50%;
@@ -80,7 +85,7 @@
   }
   .dropzone
   {
-    min-height:250px;
+    min-height:100px;
 
     .hand-icon-holder
     {
