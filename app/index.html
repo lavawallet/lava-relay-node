@@ -318,11 +318,16 @@
                                 <div class="button is-secondary btn-action-connect-web3"> Connect To Metamask </div>
                               </div>
 
+
+                              <div v-if="lavaTokenAddress">
+                                Lava Contract: <a target='_blank' v-bind:href='lavaTokenURL'>{{lavaTokenAddress}}</a>
+                              </div>
+
                             </div>
                             <div class="column">
 
                               <div v-if="web3address">
-                                Connected: <a target='_blank' v-bind:href='etherscanURL'>{{web3address}}</a>
+                                Connected Account: <a target='_blank' v-bind:href='etherscanURL'>{{web3address}}</a>
                               </div>
 
 

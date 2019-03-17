@@ -56,7 +56,10 @@ export default class EthHelper {
               errorMessage:null,
               connected: false,
               web3address:null,
-              etherscanURL:null
+              etherscanURL:null,
+              lavaTokenAddress: null,
+              lavaTokenURL:null
+
             }
       });
 
@@ -173,10 +176,21 @@ export default class EthHelper {
 
      this.clearError();
 
+     this.web3 = web3;
+
+
+     var lavaAddress = ContractInterface.getLavaContractAddress( relayConfig.environment);
+
+
+
+     await Vue.set(ethContainer, "lavaTokenAddress" , lavaAddress);
+     await Vue.set(ethContainer, "lavaTokenURL" , 'https://etherscan.io/address/'+lavaAddress);
+
+
      await Vue.set(ethContainer, "web3address" , web3.eth.accounts[0]);
      await Vue.set(ethContainer, "etherscanURL" , 'https://etherscan.io/address/'+web3.eth.accounts[0]);
 
-     this.web3 = web3;
+
 
 
      await packetRenderer.update()
