@@ -61,8 +61,7 @@ export default class LavaWalletHelper {
 
     static async getTokenBalance(ethHelper, tokenSymbol ,tokenOwner)
     {
-
-      console.log('maap', tokenSymbol )
+ 
 
       var tokenData = TokenUtils.getTokenDataBySymbol(tokenSymbol);
 

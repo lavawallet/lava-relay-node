@@ -440,11 +440,13 @@
 
          <thead>
            <tr >
+             <td> Received At </td>
              <td> From </td>
              <td> To </td>
-             <td>   </td>
+
              <td> Token Amount </td>
              <td> Relayer Reward </td>
+             <td> TX Hash </td>
            </tr>
          </thead>
 
@@ -452,12 +454,13 @@
 
            <tr v-for="(item, index) in list"  v-bind:class="item.htmlClass">
 
+             <td> {{ item.ethBlockReceived  }}   </td>
              <td>  {{ item.from  }} </td>
              <td>  {{ item.to  }} </td>
-             <td>   </td>
+
              <td>  {{ item.tokens  }} </td>
              <td>  {{ item.relayerRewardTokens  }} </td>
-
+             <td> <a v-bind:href='item.txURL'>  {{ item.txHash  }} </a> </td>
 
            </tr>
 
