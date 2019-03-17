@@ -188,7 +188,7 @@ export default class EthHelper {
 
 
      await Vue.set(ethContainer, "web3address" , web3.eth.accounts[0]);
-     await Vue.set(ethContainer, "etherscanURL" , 'https://etherscan.io/address/'+web3.eth.accounts[0]);
+     await Vue.set(ethContainer, "etherscanURL" , 'https://etherscan.io/address/'+web3.eth.accounts[0] + '#tokentxns');
 
 
 
