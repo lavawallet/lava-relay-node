@@ -18,4 +18,10 @@ This server pays the gas for users ethereum TX by collecting an incentivization 
 * Run 'npm run relay'
 
 
+## How to create and verify lava packets in your own apps 
+
+https://github.com/admazzola/lava-packet-utils
+
+
+
  
