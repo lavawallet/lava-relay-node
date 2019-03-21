@@ -11,7 +11,6 @@ var _0xBitcoinABI = require('../../../contracts/_0xBitcoinToken.json')
 var erc20TokenABI = require('../../../contracts/ERC20Interface.json')
 
 
-const relayConfig = require('../../../relay.config').config
 
 import TokenUtils from './token-utils'
 
@@ -27,41 +26,12 @@ var _0xBitcoinContract;
 export default class LavaWalletHelper {
 
 
-  /*  async collectClientTokenBalances(tokenList,userAddress)
-    {
-      for(var i in tokenList)
-      {
-        var tokenData = tokenList[i];
 
-        console.log(tokenData)
-
-        var tokenDecimals = tokenData.decimals; //fix
-
-
-        var tokenBalance = await this.getTokenBalance(tokenData.address, userAddress);
-        tokenData.wallet_balance_formatted = this.formatAmountWithDecimals(tokenBalance,tokenDecimals);
-
-        var tokenAllowance = await this.getTokenAllowance(tokenData.address, userAddress);
-        tokenData.approved_balance_formatted = this.formatAmountWithDecimals(tokenAllowance,tokenDecimals);
-
-
-        var lavaTokenBalance = await this.getLavaTokenBalance(tokenData.address, userAddress);
-        tokenData.lava_balance_formatted = this.formatAmountWithDecimals(lavaTokenBalance,tokenDecimals);
-
-        //get wallet balance and get lava balance
-
-
-        //clientTokenData
-
-      }
-
-
-    }*/
 
 
     static async getTokenBalance(ethHelper, tokenSymbol ,tokenOwner)
     {
- 
+
 
       var tokenData = TokenUtils.getTokenDataBySymbol(tokenSymbol);
 
@@ -431,6 +401,7 @@ export default class LavaWalletHelper {
   // var method = 'transfer'; //need a dropdown
 
    const BURN_ADDRESS = '0x0000000000000000000000000000000000000000';
+   const BLOCKS_UNTIL_EXPIRE = 500;
 
    var walletAddress =  tokenAddress ;
    var relayAuthority = BURN_ADDRESS; //for now...
@@ -439,7 +410,7 @@ export default class LavaWalletHelper {
    var tokenAddress = tokenAddress;
    var tokenAmount = amountRaw;
    var relayerReward = relayerRewardRaw;
-   var expires = ethBlock + 1000;
+   var expires = ethBlock + BLOCKS_UNTIL_EXPIRE;
    var nonce = web3utils.randomHex(16);
 
    //need to append everything together !! to be ..like in solidity.. :  len(message) + message
