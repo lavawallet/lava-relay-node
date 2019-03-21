@@ -144,7 +144,7 @@ export default class LavaPacketRenderer {
 
         if( isNaN( actionContainer.transferTokenRelayReward) || actionContainer.transferTokenRelayReward <= 0 )
         {
-          Vue.set(actionContainer,'transferTokenRelayReward',data.targetFastRewardTokens  );
+          Vue.set(actionContainer,'transferTokenRelayReward',data.targetNormalRewardTokens  );
         }
 
 
