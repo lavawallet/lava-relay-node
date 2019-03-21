@@ -1,5 +1,5 @@
 
-var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
+var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/v3/8d4f78fc722c42e481731e8b3015d8c1';
 
 var LavaPeerInterface = require('../lib/lava-peer-interface');
 
@@ -107,7 +107,7 @@ var lavaContractAddress = deployedContractInfo.networks.testnet.contracts.lavato
 
              console.log('!!!!!!!!!!!sig is ', computedSig)
 
-             //why does this fail 
+             //why does this fail
              var response =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
 
             assert.equal( response, true  );

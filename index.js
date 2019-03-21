@@ -1,7 +1,7 @@
 
 
-var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
-var INFURA_MAINNET_URL = 'https://mainnet.infura.io/gmXEVo5luMPUGPqg6mhy';
+var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/v3/8d4f78fc722c42e481731e8b3015d8c1';
+var INFURA_MAINNET_URL = 'https://mainnet.infura.io/v3/8d4f78fc722c42e481731e8b3015d8c1';
 
 
 
@@ -22,7 +22,7 @@ var LavaPeerInterface =  require('./lib/lava-peer-interface');
 var lavaPeerInterface = new LavaPeerInterface(redisInterface,relayConfig,accountConfig);
 
 
- 
+
 
 
 var specified_web3 = relayConfig.web3provider;

@@ -80,22 +80,7 @@ export default class EthHelper {
 
      var self = this;
      console.log('connect web3')
-
-    /* if (typeof web3 !== 'undefined') {
-
-           window.web3 = new Web3(new Web3.providers.HttpProvider(INFURA_MAINNET_URL));
-           console.log('connected to web3!')
-           return window.web3;
-
-     } else {
-
-          renderError('No web3. Please install a web3 provider such as MetaMask.')
-           return {}
-         // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-         //window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-
-     }*/
-
+ 
 
      // Modern dapp browsers...
         if (window.ethereum) {
