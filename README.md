@@ -9,6 +9,7 @@ This server pays the gas for users ethereum TX by collecting an incentivization 
 * Clone this project
 * Make sure you have NodeJS 8 installed and working (node -v)
 * Run 'npm install' to install dependencies
+
 (You may need to install build-essential with 'apt install build-essential' and may need to rebuild node-sass with 'rebuild node-sass depending on version of linux)
 
 * Copy 'sample.relay.config.js' to 'relay.config.js' and configure as desired
