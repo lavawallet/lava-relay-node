@@ -7,3 +7,5 @@ account.config.js
 /public
 
 .node-xmlhttprequest*
+
+dump.rdb

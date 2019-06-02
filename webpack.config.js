@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
 
+
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
@@ -25,7 +27,10 @@ var webpackPlugins = [
         'process.env': {
           NODE_ENV: '"production"'
         }
-      })
+      }),
+      new CopyWebpackPlugin([
+            {from:'app/assets/images',to:'app/assets/images'}
+        ])
 ]
 
 

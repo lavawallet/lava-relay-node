@@ -9,7 +9,7 @@ import Vue from 'vue'
 import AlertRenderer from './alert-renderer'
 
 import RelayRenderer from './relay-renderer'
- 
+
 
 import RelayDashboard from './relay-dashboard'
 
@@ -18,9 +18,10 @@ import RelayDashboard from './relay-dashboard'
 
 
 var alertRenderer = new AlertRenderer();
-var relayRenderer = new RelayRenderer();
+var relayRenderer;
 //var ethHelper = new EthHelper();
 var relayDashboard = new RelayDashboard();
+
 
 var navbar = new Vue({
   el: '#navbar',
@@ -36,8 +37,16 @@ $(document).ready(function(){
       if($("#relay").length > 0){
       //  var web3 = ethHelper.init( alertRenderer);
 
+        relayRenderer = new RelayRenderer();
+
         relayDashboard.init(relayRenderer);
+
+
       }
+
+
+
+
 
 
 

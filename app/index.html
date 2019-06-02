@@ -15,7 +15,7 @@
 
 <div class="page-container slate-theme " id="relay">
 
-      <section class="hero hex-overlay">
+      <section class="hero  ">
         <div class="hero-body">
           <div class="container has-text-centered" id='jumbotron'>
             <h1 class="title  color-primary">
@@ -111,6 +111,302 @@
 
 
 
+
+
+
+
+             <div id="action-container" class="action-container box" v-cloak v-if="shouldRender"    >
+
+               <div style="max-width:750px;margin:0 auto;">
+
+               <div class="token-titlebar flex-bar">
+                     <div class="token-title flex-start"> {{ selectedActionAsset.name }} </div>
+
+                     <div class="token-icon flex-end"> <img  v-bind:src="selectedActionAsset.icon_url" height="42" width="42" ></img> </div>
+               </div>
+               <div class="action-tabs-bar">
+
+                 <div class="tabs is-toggle hide-overflow"  >
+
+
+
+                   <ul class="columns">
+                     <li data-action-type="mutate" v-if="supportsDelegateCallMutation" v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true, 'is-active':(selectedActionType=='mutate')  } ">
+                       <a>
+                         <span class="icon is-small">  <i class="fas fa-download"></i>   </span>
+                         <span>Mutate</span>
+                       </a>
+                     </li>
+                     <li data-action-type="unmutate" v-if="supportsUnMutation" v-bind:class="{ 'tab-action':true,  'column':true, 'column-button':true,  'is-active':(selectedActionType=='unmutate')  } ">
+                       <a>
+                         <span class="icon is-small one-third"> <i class="fas fa-upload"></i> </span>
+                         <span>Unmutate</span>
+                       </a>
+                     </li>
+                     <li data-action-type="lavatransfer" v-if="lavaReady" v-bind:class="{  'tab-action':true, 'column':true, 'column-button':true,  'is-active':(selectedActionType=='lavatransfer')  } ">
+                       <a>
+                         <span class="icon is-small one-third"> <i class="fas fa-fast-forward"></i> </span>
+                         <span>Lava Transfer</span>
+                       </a>
+                     </li>
+
+                   </ul>
+                 </div>
+
+               </div>
+               <div class="mutate-container" v-if="(selectedActionType=='mutate')" v-cloak>
+
+
+                   <div class="subtitle-banner has-background-info has-text-light">   </div>
+
+
+
+
+                  <div class="input-container padding-md" v-if="supportsDelegateCallMutation">
+                    <div class="label">Mutate Tokens To Lava</div>
+
+                      <div class="columns">
+                          <div class="column">
+                            <div class="form-group">
+                              <div class="field">
+                                <input class="input input-short is-primary" v-model="mutateTokenQuantity" placeholder="token amount">
+                              </div>
+                                <div class="field">
+                               <div class="button is-primary btn-action-mutate"> Mutate </div>
+                                 </div>
+                            </div>
+                           </div>
+                         <div class="column">
+
+                         </div>
+                    </div>
+                  </div>
+
+
+               </div>
+               <div class="unmutate-container" v-if="(selectedActionType=='unmutate')" v-cloak v-if="supportsUnMutation">
+
+                 <div class="subtitle-banner has-background-info has-text-light">  </div>
+
+                   <div class="input-container padding-md">
+                     <div class="label">Unmutate Tokens To 0xBTC</div>
+
+                       <div class="columns">
+                           <div class="column">
+                             <div class="form-group">
+                                 <div class="field">
+                                   <input class="input input-short is-primary" v-model="unmutateTokenQuantity" placeholder="token amount">
+                                 </div>
+                                  <div class="field">
+                                    <div class="button is-primary btn-action-unmutate"> Unmutate </div>
+                                </div>
+                             </div>
+                            </div>
+                          <div class="column">
+
+                          </div>
+                     </div>
+                 </div>
+
+
+               </div>
+               <div class="lava-transfer-container" v-if="(selectedActionType=='lavatransfer')" v-cloak>
+
+                 <div class="subtitle-banner has-background-orange has-text-light"> Lava Balance: {{ selectedActionAsset.lava_balance_formatted }} </div>
+
+                 <div class="input-container padding-md">
+                 <div class="label">Transfer Tokens</div>
+
+                   <p> Generate a signed Lava Transfer Message.  This message can be submitted to the Ethereum network by anyone, at which point the tokens will be transferred to the recipient's Lava Balance.  </p>
+
+
+                   <div class="whitespace-sm"></div>
+
+
+                     <div class="columns">
+                         <div class="column">
+
+                           <div class="form-group padding-md">
+                               <div class="label">Amount</div>
+                               <input class="input input-short is-primary" v-model="transferTokenQuantity" placeholder="token amount">
+                           </div>
+
+                           <div class="form-group padding-md">
+                               <div class="label">Method</div>
+
+                              <div class="select">
+                                 <select class=" " onchange=" " v-model="transferTokenMethod" placeholder="lava method">
+                                   <option>transfer</option>
+                                   <option>approve</option>
+                                </select>
+                              </div>
+                           </div>
+
+                           <div class="form-group padding-md">
+                               <div class="label">Recipient</div>
+                               <input class="input input-short is-primary" v-model="transferTokenRecipient" placeholder="token recipient">
+                           </div>
+                           <div class="form-group padding-md">
+                               <div class="label">Relay Reward (tokens)</div>
+                               <input class="input input-short is-primary" v-model="transferTokenRelayReward" placeholder="token relay reward">
+                           </div>
+
+                           <div class="whitespace-sm"></div>
+                             <div class="button is-primary btn-action-lava-transfer"> Sign </div>
+
+                          </div>
+                        <div class="column">
+                            <div class="is-size-6">   </div>
+
+                            <p v-if="lavaPacketExists"> Specify the URL for a Lava Network Node and broadcast this packet to the Lava Network Relayers.  They will submit the packet to the Ethereum Network if the reward is high enough.  </p>
+
+                            <div class="form-group padding-md" v-if="lavaPacketExists">
+                                <div class="label">Relay Node URL</div>
+                                <input class="input input-short is-primary" v-model="relayNodeURL" placeholder="xxx.xxx.xxx.xxx:yyyy">
+
+                                  <div class="whitespace-sm"></div>
+
+                                <div id="btn-broadcast-lava-packet" v-if="lavaPacketExists">
+                                  <div class="button is-primary btn-broadcast-lava-packet">Broadcast Lava Packet</div>
+                                </div>
+
+                                <div class="whitespace-sm"></div>
+
+                                <div class="subtitle color-primary has-text-centered" v-cloak v-if="lavaPacketExists" >
+                                  {{ broadcastMessage }}
+                                </div>
+                            </div>
+
+
+
+
+                           <div class="whitespace-sm"></div>
+
+                            <div class="form-group padding-md" v-if="lavaPacketExists">
+                                <div class="label">Lava Packet Data</div>
+                                <textarea class="textarea" placeholder="Lava packet data" rows="10"  v-model="lavaPacketData" ></textarea>
+
+                            </div>
+
+
+
+
+                                    <div class="whitespace-sm"></div>
+
+                                    <div id="btn-download-lava-packet" v-if="lavaPacketExists">
+                                    </div>
+                              </div>
+                         </div>
+                      </div>
+
+
+                     </div>
+
+                     </div>
+                   </div>
+
+
+
+
+
+                   <div id="eth-container" class="eth-container box" v-cloak    >
+
+                     <div class="columns">
+                            <div class="column">
+
+                              <div v-if="!connected" >
+                                <div class="button is-secondary btn-action-connect-web3"> Connect To Metamask </div>
+                              </div>
+
+
+                              <div v-if="lavaTokenAddress">
+                                Lava Contract: <a target='_blank' v-bind:href='lavaTokenURL'>{{lavaTokenAddress}}</a>
+                              </div>
+
+                            </div>
+                            <div class="column">
+
+                              <div v-if="web3address">
+                                Connected Account: <a target='_blank' v-bind:href='etherscanURL'>{{web3address}}</a>
+                              </div>
+
+
+                            </div>
+                     </div>
+
+                     <div class="columns alert-container notification is-danger" v-if="errorMessage" >
+
+                          {{ errorMessage }}
+
+                    </div>
+
+
+
+                   </div>
+
+
+
+                     <div class="whitespace-md"></div>
+
+
+                       <div id="asset-list" class="asset-list  ">
+
+                         <table class="   ">
+                           <thead>
+                             <tr >
+                               <td class="has-text-centered"> Icon </td>
+                               <td class="has-text-centered"> Name </td>
+                               <td class="has-text-centered"> Balance </td>
+
+                             </tr>
+                           </thead>
+                           <tbody>
+                           <tr    v-for="(item, index) in tokens.token_list" v-bind:data-tokenaddress="item.address" v-bind:class="{   'asset-row':true, 'acts-as-link':true, 'hover-shadow':true   } " >
+                             <td class="row-cell has-text-centered icon-url"><img  v-bind:src="item.icon_url" height="42" width="42" ></img></td>
+                             <td class="row-cell has-text-centered token-name">{{item.name}}</td>
+                             <td class="row-cell has-text-centered"><div class=" token-balance">{{item.token_balance_formatted}}</div> </td>
+
+                           </tr>
+                         </tbody>
+                         </table>
+
+                        </div>
+
+
+                              <div class="whitespace-sm"></div>
+
+
+                        <!--   <div id="lava-packet-dropzone" class="lava-packet-dropzone   ">
+
+                            <div class="subtitle is-size-3">Drop Lava Packets Here</div>
+
+                            <div class="dropzone"  >
+                               <div class="hand-icon-holder">
+
+                               </div>
+
+                               <div class="dropzone-file-input-container">
+                                 <p> Or select a local file </p>
+
+                                   <div class="light-box">
+                                     <input class="dropzone-file-input" name="lavaPacketFile" type="file">
+                                   </div>
+                               </div>
+
+                            </div>
+
+
+
+                          </div> -->
+
+
+
+                             <div class="whitespace-sm"></div>
+
+
+
+
+
      <div id="queuedtx"  class="box background-secondary transaction-list " style="overflow-x:auto; min-height:480px;">
        <div class='subtitle color-white'>Queued Lava Packets</div>
        <table class='table table-dark zeroauto' v-cloak>
@@ -119,7 +415,7 @@
            <tr >
              <td> From </td>
              <td> To </td>
-             <td> Token Address </td>
+             <td>   </td>
              <td> Token Amount </td>
              <td> Relayer Reward </td>
            </tr>
@@ -131,9 +427,9 @@
 
              <td>  {{ item.from  }} </td>
              <td>  {{ item.to  }} </td>
-             <td>  {{ item.tokenAddress }} </td>
-             <td>  {{ item.tokenAmount  }} </td>
-             <td>  {{ item.relayerReward  }} </td>
+             <td>   </td>
+             <td>  {{ item.tokens  }} </td>
+             <td>  {{ item.relayerRewardTokens  }} </td>
 
 
            </tr>
@@ -149,11 +445,13 @@
 
          <thead>
            <tr >
+             <td> Received At </td>
              <td> From </td>
              <td> To </td>
-             <td> Token Address </td>
+
              <td> Token Amount </td>
              <td> Relayer Reward </td>
+             <td> TX Hash </td>
            </tr>
          </thead>
 
@@ -161,12 +459,13 @@
 
            <tr v-for="(item, index) in list"  v-bind:class="item.htmlClass">
 
+             <td> {{ item.ethBlockReceived  }}   </td>
              <td>  {{ item.from  }} </td>
              <td>  {{ item.to  }} </td>
-             <td>  {{ item.tokenAddress }} </td>
-             <td>  {{ item.tokenAmount  }} </td>
-             <td>  {{ item.relayerReward  }} </td>
 
+             <td>  {{ item.tokens  }} </td>
+             <td>  {{ item.relayerRewardTokens  }} </td>
+             <td> <a v-bind:href='item.txURL'>  {{ item.txHash  }} </a> </td>
 
            </tr>
 
@@ -250,12 +549,12 @@
 
         <div class="whitespace-sm"></div>
 
-        <div class='title'> Token Mining Pool </div>
+        <div class='title'> Lava Network Relay </div>
 
 
         <div class="whitespace-sm"></div>
 
-        <div class='subtitle '> Mine Ethereum tokens distributed using Proof of Work </div>
+        <div class='subtitle '> Send ERC20 tokens without any Ether </div>
 
 
 

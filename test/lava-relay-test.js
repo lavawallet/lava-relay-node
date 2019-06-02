@@ -1,5 +1,5 @@
 
-var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
+var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/v3/8d4f78fc722c42e481731e8b3015d8c1';
 
 var LavaPeerInterface = require('../lib/lava-peer-interface');
 
@@ -20,6 +20,10 @@ const tokenContractJSON = require('../contracts/_0xBitcoinToken.json');
 const accountConfig = require('../account.config').account
 
 
+var ethSigUtil = require('eth-sig-util')
+ const web3utils =  require('web3-utils');
+   const ethjsutil = require('ethereumjs-util')
+var EIP712Helper = require("../lib/EIP712Helper");
 
 
 var Web3 = require('web3')
@@ -28,13 +32,15 @@ var web3 = new Web3( )
 
 web3.setProvider(new web3.providers.HttpProvider(INFURA_ROPSTEN_URL))
 
+const deployedContractInfo = require('../DeployedContractInfo.json');
+
 
 var assert = require('assert');
 
 var lavaPeerInterface;
 
 //ropsten test contract
-var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
+var lavaContractAddress = deployedContractInfo.networks.testnet.contracts.lavatoken.blockchain_address ;// '0x6302fac9ef9aad14ed529e939b3742d2141170ad'
 
 
   describe('Lava Packet', function() {
@@ -101,6 +107,7 @@ var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
 
              console.log('!!!!!!!!!!!sig is ', computedSig)
 
+             //why does this fail
              var response =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
 
             assert.equal( response, true  );
@@ -201,6 +208,98 @@ var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
 
         var lavaContract = ContractInterface.getLavaContract(web3,'development');
 
+
+
+
+        var typedData = LavaPacketUtils.getLavaTypedDataFromParams(
+           packetData.methodName,
+           packetData.relayAuthority,
+           packetData.from,
+           packetData.to,
+           packetData.wallet,
+           packetData.tokens,
+           packetData.relayerRewardTokens,
+           packetData.expires,
+           packetData.nonce);
+
+          var typedData = {
+                types: {
+                    EIP712Domain: [
+                        { name: "contractName", type: "string" },
+                        { name: "version", type: "string" },
+                        { name: "chainId", type: "uint256" },
+                        { name: "verifyingContract", type: "address" }
+                    ],
+                    LavaPacket: [
+                        { name: 'methodName', type: 'string' },
+                        { name: 'relayAuthority', type: 'address' },
+                        { name: 'from', type: 'address' },
+                        { name: 'to', type: 'address' },
+                        { name: 'wallet', type: 'address' },
+                        { name: 'tokens', type: 'uint256' },
+                        { name: 'relayerRewardTokens', type: 'uint256' },
+                        { name: 'expires', type: 'uint256' },
+                        { name: 'nonce', type: 'uint256' }
+                    ],
+                },
+                primaryType: 'LavaPacket',
+                domain: {
+                  contractName: 'Lava Wallet',
+                  version: '1',
+                  chainId: 3,
+                  verifyingContract: lavaContract.options.address
+                },
+                message: {
+                  methodName: 'transfer',
+                  relayAuthority: '0x0',
+                  from: "0xb11ca87e32075817c82cc471994943a4290f4a14",
+                  to: "0x357FfaDBdBEe756aA686Ef6843DA359E2a85229c",
+                  wallet:lavaContractAddress,
+                  tokens: 0 ,
+                  relayerRewardTokens: 0,
+                  expires:8365044,
+                  nonce:"0xc18f687c56f1b2749af7d6151fa351",
+                },
+            };
+
+            const types = typedData.types;
+
+
+              var typedDataHash = ethjsutil.sha3(
+                  Buffer.concat([
+                      Buffer.from('1901', 'hex'),
+                      EIP712Helper.structHash('EIP712Domain', typedData.domain, types),
+                      EIP712Helper.structHash(typedData.primaryType, typedData.message, types),
+                  ]),
+              );
+
+
+
+
+
+          var computedMessageHash = EIP712Helper.structHash(typedData.primaryType, typedData.message, types)
+          var contractMessageHash = await lavaContract.methods.getLavaPacketHash(packetData.methodName,packetData.relayAuthority,packetData.from,packetData.to,packetData.wallet,packetData.tokens,packetData.relayerRewardTokens,packetData.expires,packetData.nonce).call();
+
+          assert.equal('0x'+computedMessageHash.toString('hex'), contractMessageHash)
+
+
+
+          /**
+
+           If this fails, check the chain ID
+          */
+
+
+          var computedDomainHash = EIP712Helper.structHash('EIP712Domain', typedData.domain, types)
+           var contractDomainHash = await lavaContract.methods.getEIP712DomainHash('Lava Wallet','1',3,lavaContract.options.address).call();
+
+
+           //this is broken :o
+           assert.equal('0x'+computedDomainHash.toString('hex'), contractDomainHash)
+
+
+
+
         var contractDataHash = await lavaContract.methods.getLavaTypedDataHash(
           packetData.methodName,
           packetData.relayAuthority,
@@ -213,9 +312,15 @@ var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
           packetData.nonce
         ).call()
 
-        var computedDataHash = LavaPacketUtils.getLavaTypedDataHashFromPacket(packetData);
+         var computedDataHash = LavaPacketUtils.getLavaTypedDataHashFromPacket(packetData);
 
           assert.equal( contractDataHash  , '0x' + computedDataHash.toString('hex') );
+
+
+
+
+
+
 
       });
 
@@ -248,10 +353,10 @@ var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
           var validPacket =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
           assert.equal( validPacket  , true );
 
-         var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
+        /* var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
           console.log('broadcast',response)
           assert.equal( response  , true );
-
+      */
 
       });
 
@@ -263,9 +368,9 @@ var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
               methodName: 'mutate',
               relayAuthority: '0x0',
               from: "0xB11ca87E32075817C82Cc471994943a4290f4a14",
-              to: "0x5c6134d3f856c9008309a98d82eced344267add7",
+              to: "0x27fc9a5b7f3c8bb041a7b6e54afddea059159127",
               wallet:lavaContractAddress,
-              tokens: 0,
+              tokens: 5,
               relayerRewardTokens: 0,
               expires:336504400,
               nonce: LavaPacketUtils.getRandomNonce()  //needs to be a string !!
@@ -284,10 +389,10 @@ var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
           var validPacket =  LavaPacketUtils.lavaPacketHasValidSignature(packetData)
           assert.equal( validPacket  , true );
 
-        /*  var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
+            var response =  await LavaPacketSubmitter.broadcastLavaPacket(packetData,'normal',2,accountConfig,web3,'development');
           console.log('broadcast',response)
           assert.equal( response  , true );
-          */
+
 
       });
 
