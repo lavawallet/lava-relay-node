@@ -203,13 +203,13 @@ var lavaContractAddress = '0xf9454ac1dd9d55f23ff97fb0b06b6b0874ffd606'
         var lavaContract = ContractInterface.getLavaContract(web3,'development');
 
         var contractDataHash = await lavaContract.methods.getLavaTypedDataHash(
-          packetData.methodName,
+          packetData.method,
           packetData.relayAuthority,
           packetData.from,
           packetData.to,
-          packetData.token,
-          packetData.tokens,
-          packetData.relayerRewardTokens,
+          packetData.tokenAddress,
+          packetData.tokenAmount,
+          packetData.relayerReward,
           packetData.expires,
           packetData.nonce
         ).call()
