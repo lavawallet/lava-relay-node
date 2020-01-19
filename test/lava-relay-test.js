@@ -1,3 +1,4 @@
+var INFURA_GOERLI_URL = 'https://goreli.infura.io/gmXEVo5luMPUGPqg6mhy';
 
 var INFURA_ROPSTEN_URL = 'https://ropsten.infura.io/gmXEVo5luMPUGPqg6mhy';
 
@@ -14,7 +15,7 @@ const LavaPacketUtils = require("../lib/lava-packet-utils");
 const relayConfig = require('../relay.config').config
 
 
-const lavaContractJSON = require('../contracts/LavaToken.json');
+const lavaContractJSON = require('../contracts/LavaWallet.json');
 const tokenContractJSON = require('../contracts/_0xBitcoinToken.json');
 
 const accountConfig = require('../account.config').account
@@ -26,7 +27,7 @@ var Web3 = require('web3')
 
 var web3 = new Web3( )
 
-web3.setProvider(new web3.providers.HttpProvider(INFURA_ROPSTEN_URL))
+web3.setProvider(new web3.providers.HttpProvider(INFURA_GOERLI_URL))
 
 
 var assert = require('assert');
@@ -34,7 +35,7 @@ var assert = require('assert');
 var lavaPeerInterface;
 
 //ropsten test contract
-var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
+var lavaContractAddress = '0xf9454ac1dd9d55f23ff97fb0b06b6b0874ffd606'
 
 
   describe('Lava Packet', function() {
@@ -206,7 +207,7 @@ var lavaContractAddress = '0x5c6134d3f856c9008309a98d82eced344267add7'
           packetData.relayAuthority,
           packetData.from,
           packetData.to,
-          packetData.wallet,
+          packetData.token,
           packetData.tokens,
           packetData.relayerRewardTokens,
           packetData.expires,
