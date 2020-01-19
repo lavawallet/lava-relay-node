@@ -4,7 +4,7 @@
   "description": "A p2p node for relaying lava transactions for Ethereum",
   "main": "index.js",
   "scripts": {
-    "relay": "webpack && node index.js",
+    "server": "webpack && node index.js",
     "webpack": "webpack",
     "test": "mocha --timeout 10000",
     "dev": "webpack  && nodemon index.js ",
