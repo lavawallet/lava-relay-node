@@ -1,6 +1,6 @@
 {
   "name": "lava-relay-node",
-  "version": "0.0.1",
+  "version": "0.6.1",
   "description": "A p2p node for relaying lava transactions for Ethereum",
   "main": "index.js",
   "scripts": {
