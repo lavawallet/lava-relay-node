@@ -38,7 +38,7 @@
     "jayson": "^2.0.5",
     "jquery": "^3.3.1",
     "public-ip": "^2.4.0",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "tcp-port-used": "^0.1.2",
